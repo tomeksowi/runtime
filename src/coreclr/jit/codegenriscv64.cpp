@@ -1592,6 +1592,8 @@ void CodeGen::genSetRegToConst(regNumber targetReg, var_types targetType, GenTre
             emitAttr size       = emitActualTypeSize(tree);
             double   constValue = tree->AsDblCon()->DconValue();
 
+            assert(emitter::isFloatReg(targetReg));
+
             // Make sure we use "fmv.w.x reg, zero" only for positive zero (0.0)
             // and not for negative zero (-0.0)
             if (FloatingPointUtils::isPositiveZero(constValue))
@@ -1600,17 +1602,25 @@ void CodeGen::genSetRegToConst(regNumber targetReg, var_types targetType, GenTre
                 // We will just zero out the entire vector register for both float and double
                 emit->emitIns_R_R(size == EA_4BYTE ? INS_fmv_w_x : INS_fmv_d_x, size, targetReg, REG_R0);
             }
+            else if (size == EA_4BYTE)
+            {
+                regNumber temp = tree->GetSingleTempReg();
+
+                uint32_t bits = BitOperations::SingleToUInt32Bits(FloatingPointUtils::convertToSingle(constValue));
+                uint32_t hi20 = (bits + 0x800) >> 12;
+                uint32_t lo12 = bits & 0xfff;
+                if (hi20 != 0)
+                    emit->emitIns_R_I(INS_lui, size, temp, hi20);
+                if (lo12 != 0)
+                    emit->emitIns_R_R_I(INS_addi, size, temp, (hi20 != 0 ? temp : REG_ZERO), lo12);
+
+                emit->emitIns_R_R(INS_fmv_w_x, size, targetReg, temp);
+            }
             else
             {
-                // Get a temp integer register to compute long address.
-                // regNumber addrReg = tree->GetSingleTempReg();
-
                 // We must load the FP constant from the constant pool
                 // Emit a data section constant for the float or double constant.
                 CORINFO_FIELD_HANDLE hnd = emit->emitFltOrDblConst(constValue, size);
-
-                // Load the FP constant.
-                assert(emit->isFloatReg(targetReg));
 
                 // Compute the address of the FP constant and load the data.
                 emit->emitIns_R_C(size == EA_4BYTE ? INS_flw : INS_fld, size, targetReg, REG_NA, hnd, 0);
