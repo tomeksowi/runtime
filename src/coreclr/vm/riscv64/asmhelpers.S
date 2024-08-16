@@ -976,3 +976,16 @@ LEAF_ENTRY GetThreadStaticsVariableOffset, _TEXT
     la.tls.ie   a0, t_ThreadStatics
     EPILOG_RETURN
 LEAF_END GetThreadStaticsVariableOffset, _TEXT
+
+
+// ------------------------------------------------------------------
+// size_t GetTLSResolverAddress()
+
+// Helper to get the TLS resolver address. This will be then used to determine if we have a static or dynamic resolver.
+LEAF_ENTRY GetTLSResolverAddress, _TEXT
+LOCAL_LABEL(Addr_of_tlsdesc_hi):
+    auipc a0, %tlsdesc_hi(t_ThreadStatics)
+    addi  a0, a0, %tlsdesc_add_lo(LOCAL_LABEL(Addr_of_tlsdesc_hi))
+    ld    a0, %tlsdesc_load_lo(LOCAL_LABEL(Addr_of_tlsdesc_hi))(a0)
+    EPILOG_RETURN
+LEAF_END GetTLSResolverAddress, _TEXT
