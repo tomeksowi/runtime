@@ -3385,9 +3385,11 @@ AGAIN:
 #ifdef FEATURE_HW_INTRINSICS
                 case GT_HWINTRINSIC:
                     hash += tree->AsHWIntrinsic()->GetHWIntrinsicId();
+#ifdef FEATURE_SIMD
                     hash += tree->AsHWIntrinsic()->GetSimdBaseType();
                     hash += tree->AsHWIntrinsic()->GetSimdSize();
                     hash += tree->AsHWIntrinsic()->GetAuxiliaryType();
+#endif // FEATURE_SIMD
                     hash += tree->AsHWIntrinsic()->GetRegByIndex(1);
                     break;
 #endif // FEATURE_HW_INTRINSICS
@@ -3850,7 +3852,7 @@ unsigned Compiler::gtSetMultiOpOrder(GenTreeMultiOp* multiOp)
 
     bool optsEnabled = opts.OptimizationEnabled();
 
-#if defined(FEATURE_HW_INTRINSICS)
+#if defined(FEATURE_SIMD)
     if (multiOp->OperIs(GT_HWINTRINSIC) && optsEnabled)
     {
         GenTreeHWIntrinsic* hwTree = multiOp->AsHWIntrinsic();
@@ -3912,7 +3914,7 @@ unsigned Compiler::gtSetMultiOpOrder(GenTreeMultiOp* multiOp)
                 break;
         }
     }
-#endif // defined(FEATURE_SIMD) || defined(FEATURE_HW_INTRINSICS)
+#endif // defined(FEATURE_SIMD)
 
     // The binary case is special because of GTF_REVERSE_OPS.
     if (multiOp->GetOperandCount() == 2)
@@ -4002,7 +4004,7 @@ unsigned Compiler::gtSetMultiOpOrder(GenTreeMultiOp* multiOp)
     }
     return level;
 }
-#endif
+#endif // defined(FEATURE_SIMD) || defined(FEATURE_HW_INTRINSICS)
 
 //-----------------------------------------------------------------------------
 // gtWalkOp: Traverse and mark an address expression
@@ -18406,7 +18408,7 @@ bool GenTreeIntConCommon::AddrNeedsReloc(Compiler* comp)
 }
 #endif // TARGET_X86
 
-#if defined(FEATURE_HW_INTRINSICS)
+#if defined(FEATURE_SIMD)
 unsigned GenTreeVecCon::ElementCount(unsigned simdSize, var_types simdBaseType)
 {
     return simdSize / genTypeSize(simdBaseType);
@@ -18849,7 +18851,7 @@ void GenTreeMskCon::EvaluateBinaryInPlace(
     unreached();
 #endif // FEATURE_MASKED_HW_INTRINSICS
 }
-#endif // FEATURE_HW_INTRINSICS*/
+#endif // FEATURE_SIMD*/
 
 //------------------------------------------------------------------------
 // IsFieldAddr: Is "this" a static or class field address?
@@ -20097,6 +20099,7 @@ FieldSeq::FieldSeq(CORINFO_FIELD_HANDLE fieldHnd, ssize_t offset, FieldKind fiel
     }
 }
 
+#ifdef FEATURE_HW_INTRINSICS
 #ifdef FEATURE_SIMD
 //-------------------------------------------------------------------
 // SetOpLclRelatedToSIMDIntrinsic: Determine if the tree has a local var that needs to be set
@@ -20112,7 +20115,7 @@ void Compiler::SetOpLclRelatedToSIMDIntrinsic(GenTree* op)
         setLclRelatedToSIMDIntrinsic(op);
     }
 }
-
+#endif // FEATURE_SIMD
 void GenTreeMultiOp::ResetOperandArray(size_t    newOperandCount,
                                        Compiler* compiler,
                                        GenTree** inlineOperands,
@@ -20252,7 +20255,7 @@ var_types GenTreeJitIntrinsic::GetSimdBaseType() const
     }
     return JitType2PreciseVarType(simdBaseJitType);
 }
-#endif // FEATURE_SIMD
+#endif // FEATURE_HW_INTRINSICS
 
 #ifdef FEATURE_HW_INTRINSICS
 //------------------------------------------------------------------------
@@ -20657,6 +20660,7 @@ bool GenTree::isEmbeddedMaskingCompatibleHWIntrinsic() const
     return false;
 }
 
+#ifdef FEATURE_SIMD
 GenTreeHWIntrinsic* Compiler::gtNewSimdHWIntrinsicNode(var_types      type,
                                                        NamedIntrinsic hwIntrinsicID,
                                                        CorInfoType    simdBaseJitType,
@@ -27913,6 +27917,7 @@ GenTree* Compiler::gtNewSimdWithElementNode(
 
     return gtNewSimdHWIntrinsicNode(type, op1, op2, op3, hwIntrinsicID, simdBaseJitType, simdSize);
 }
+#endif // FEATURE_SIMD
 
 #ifdef TARGET_ARM64
 //------------------------------------------------------------------------
@@ -27982,7 +27987,7 @@ GenTreeFieldList* Compiler::gtConvertParamOpToFieldList(GenTree* op, unsigned fi
     return fieldList;
 }
 #endif // TARGET_ARM64
-
+#ifdef FEATURE_SIMD
 GenTree* Compiler::gtNewSimdWithLowerNode(
     var_types type, GenTree* op1, GenTree* op2, CorInfoType simdBaseJitType, unsigned simdSize)
 {
@@ -28040,7 +28045,6 @@ GenTree* Compiler::gtNewSimdWithUpperNode(
 
     return gtNewSimdHWIntrinsicNode(type, op1, op2, intrinsicId, simdBaseJitType, simdSize);
 }
-
 GenTreeHWIntrinsic* Compiler::gtNewScalarHWIntrinsicNode(var_types type, NamedIntrinsic hwIntrinsicID)
 {
     return new (this, GT_HWINTRINSIC)
@@ -28077,7 +28081,7 @@ GenTreeHWIntrinsic* Compiler::gtNewScalarHWIntrinsicNode(
     return new (this, GT_HWINTRINSIC)
         GenTreeHWIntrinsic(type, getAllocator(CMK_ASTNode), hwIntrinsicID, CORINFO_TYPE_UNDEF, 0, op1, op2, op3);
 }
-
+#endif // FEATURE_SIMD
 //------------------------------------------------------------------------
 // OperIsHWIntrinsic: Is this a hwintrinsic with the specified id
 //
@@ -29565,7 +29569,7 @@ genTreeOps GenTreeHWIntrinsic::GetOperForHWIntrinsicId(NamedIntrinsic id, var_ty
         }
     }
 }
-
+#ifdef FEATURE_SIMD
 //------------------------------------------------------------------------------
 // GetHWIntrinsicIdForUnOp: Returns intrinsic ID based on the oper, base type, and simd size
 //
@@ -29682,6 +29686,7 @@ NamedIntrinsic GenTreeHWIntrinsic::GetHWIntrinsicIdForBinOp(Compiler*  comp,
                                                             unsigned   simdSize,
                                                             bool       isScalar)
 {
+
     var_types simdType = comp->getSIMDTypeForSize(simdSize);
 
     assert(varTypeIsArithmetic(simdBaseType));
@@ -31004,6 +31009,7 @@ bool GenTreeHWIntrinsic::ShouldConstantProp(GenTree* operand, GenTreeVecCon* vec
 
     return false;
 }
+#endif // FEATURE_SIMD
 #endif // FEATURE_HW_INTRINSICS
 
 //---------------------------------------------------------------------------------------
@@ -32083,8 +32089,8 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
     CorInfoType    simdBaseJitType = tree->GetSimdBaseJitType();
     unsigned int   simdSize        = tree->GetSimdSize();
 
+#ifdef FEATURE_SIMD
     simd_t simdVal = {};
-
     if (GenTreeVecCon::IsHWIntrinsicCreateConstant<simd_t>(tree, simdVal))
     {
         GenTreeVecCon* vecCon = gtNewVconNode(retType);
@@ -32099,6 +32105,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
         fgUpdateConstTreeValueNumber(vecCon);
         return vecCon;
     }
+#endif // FEATURE_SIMD
 
     GenTree* op1     = nullptr;
     GenTree* op2     = nullptr;
@@ -32130,7 +32137,6 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
             return tree;
         }
     }
-
 #if defined(FEATURE_MASKED_HW_INTRINSICS)
     if (tree->OperIsConvertMaskToVector())
     {
@@ -32240,6 +32246,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
         assert(op2 == nullptr);
         assert(op3 == nullptr);
 
+#if defined(FEATURE_MASKED_HW_INTRINSICS)
         if (oper != GT_NONE)
         {
             if (varTypeIsMask(retType))
@@ -32252,7 +32259,6 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
             }
             resultNode = cnsNode;
         }
-#if defined(FEATURE_MASKED_HW_INTRINSICS)
         else if (tree->OperIsConvertMaskToVector())
         {
             GenTreeMskCon* mskCon = cnsNode->AsMskCon();
@@ -32309,11 +32315,12 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
 
             resultNode = mskCon;
         }
-#endif // FEATURE_MASKED_HW_INTRINSICS
         else
+#endif // FEATURE_MASKED_HW_INTRINSICS
         {
             switch (ni)
             {
+#if defined(TARGET_ARM64) || defined(TARGET_XARCH)
 #ifdef TARGET_ARM64
                 case NI_ArmBase_LeadingZeroCount:
 #else
@@ -32329,7 +32336,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                     resultNode = cnsNode;
                     break;
                 }
-
+#endif // defined(TARGET_ARM64) || defined(TARGET_XARCH)
 #ifdef TARGET_ARM64
                 case NI_ArmBase_Arm64_LeadingZeroCount:
                 {
@@ -32344,7 +32351,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                     resultNode = cnsNode;
                     break;
                 }
-#else
+#elif defined(TARGET_XARCH)
                 case NI_LZCNT_X64_LeadingZeroCount:
                 {
                     assert(varTypeIsLong(retType));
@@ -32357,7 +32364,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                     break;
                 }
 #endif
-
+#ifdef FEATURE_SIMD
                 case NI_Vector128_AsVector3:
                 case NI_Vector128_AsVector128Unsafe:
 #ifdef TARGET_ARM64
@@ -32495,7 +32502,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                     }
                     break;
                 }
-
+#endif // FEATURE_SIMD
                 default:
                 {
                     break;
@@ -32505,6 +32512,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
     }
     else if (otherNode->OperIsConst())
     {
+#ifdef FEATURE_SIMD
         if (oper != GT_NONE)
         {
             assert(op3 == nullptr);
@@ -32781,6 +32789,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                 }
             }
         }
+#endif // FEATURE_SIMD
     }
     else if (op3 == nullptr)
     {
@@ -32792,6 +32801,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
             oper = GT_NONE;
         }
 
+#ifdef FEATURE_SIMD
         switch (oper)
         {
             case GT_ADD:
@@ -32870,7 +32880,6 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                 {
                     break;
                 }
-
                 if (cnsNode->AsVecCon()->IsScalarOne(simdBaseType))
                 {
                     resultNode = otherNode;
@@ -33270,8 +33279,10 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                 break;
             }
         }
+#endif // FEATURE_SIMD
     }
 
+#ifdef FEATURE_SIMD
     if (op3 != nullptr)
     {
         switch (ni)
@@ -33326,7 +33337,6 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
                 }
                 break;
             }
-
             default:
             {
                 break;
@@ -33339,6 +33349,7 @@ GenTree* Compiler::gtFoldExprHWIntrinsic(GenTreeHWIntrinsic* tree)
         resultNode = gtNewSimdCvtVectorToMaskNode(retType, resultNode, simdBaseJitType, simdSize);
         return gtFoldExprHWIntrinsic(resultNode->AsHWIntrinsic());
     }
+#endif // FEATURE_SIMD
 
     if (resultNode != tree)
     {

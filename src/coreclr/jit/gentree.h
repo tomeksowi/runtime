@@ -6569,7 +6569,7 @@ struct GenTreeHWIntrinsic : public GenTreeJitIntrinsic
     }
 
     static bool Equals(GenTreeHWIntrinsic* op1, GenTreeHWIntrinsic* op2);
-
+#ifdef FEATURE_SIMD
     static NamedIntrinsic GetHWIntrinsicIdForUnOp(
         Compiler* comp, genTreeOps oper, GenTree* op1, var_types simdBaseType, unsigned simdSize, bool isScalar);
 
@@ -6592,7 +6592,7 @@ struct GenTreeHWIntrinsic : public GenTreeJitIntrinsic
 
     static var_types GetLookupTypeForCmpOp(
         Compiler* comp, genTreeOps oper, var_types type, var_types simdBaseType, unsigned simdSize);
-
+#endif // FEATURE_SIMD
     static genTreeOps GetOperForHWIntrinsicId(NamedIntrinsic id, var_types simdBaseType, bool* isScalar);
 
     genTreeOps GetOperForHWIntrinsicId(bool* isScalar) const
@@ -6600,7 +6600,9 @@ struct GenTreeHWIntrinsic : public GenTreeJitIntrinsic
         return GetOperForHWIntrinsicId(GetHWIntrinsicId(), GetSimdBaseType(), isScalar);
     }
 
+#ifdef FEATURE_SIMD
     bool ShouldConstantProp(GenTree* operand, GenTreeVecCon* vecCon);
+#endif
 
     void NormalizeJitBaseTypeToInt(NamedIntrinsic id, var_types simdBaseType)
     {
@@ -9649,7 +9651,7 @@ inline bool GenTree::IsVectorNaN(var_types simdBaseType) const
 //
 inline bool GenTree::IsVectorCreate() const
 {
-#ifdef FEATURE_HW_INTRINSICS
+#if defined(FEATURE_SIMD)
     if (OperIs(GT_HWINTRINSIC))
     {
         switch (AsHWIntrinsic()->GetHWIntrinsicId())
@@ -9667,7 +9669,7 @@ inline bool GenTree::IsVectorCreate() const
                 return false;
         }
     }
-#endif // FEATURE_HW_INTRINSICS
+#endif // FEATURE_SIMD
 
     return false;
 }
@@ -9767,7 +9769,7 @@ inline bool GenTree::IsMaskZero() const
 //
 inline uint64_t GenTree::GetIntegralVectorConstElement(size_t index, var_types simdBaseType)
 {
-#ifdef FEATURE_HW_INTRINSICS
+#ifdef FEATURE_SIMD
     if (IsCnsVec())
     {
         const GenTreeVecCon* node = AsVecCon();
@@ -9822,7 +9824,7 @@ inline uint64_t GenTree::GetIntegralVectorConstElement(size_t index, var_types s
             }
         }
     }
-#endif // FEATURE_HW_INTRINSICS
+#endif // FEATURE_SIMD
 
     return false;
 }

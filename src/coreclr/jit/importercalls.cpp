@@ -3241,6 +3241,8 @@ GenTree* Compiler::impIntrinsic(CORINFO_CLASS_HANDLE    clsHnd,
             assert((LAST_NI_Vector128 + 1) == FIRST_NI_AdvSimd);
 
             if (ni < LAST_NI_Vector128)
+#elif defined(TARGET_RISCV64)
+            // No vectors yet
 #else
 #error Unsupported platform
 #endif
@@ -9472,7 +9474,7 @@ GenTree* Compiler::impEstimateIntrinsic(CORINFO_METHOD_HANDLE method,
         }
     }
 
-#if defined(FEATURE_HW_INTRINSICS)
+#if defined(FEATURE_SIMD)
     if (intrinsicId != NI_Illegal)
     {
         unsigned simdSize;
@@ -9522,7 +9524,7 @@ GenTree* Compiler::impEstimateIntrinsic(CORINFO_METHOD_HANDLE method,
     }
 
     assert(!swapOp1AndOp3);
-#endif // FEATURE_HW_INTRINSICS
+#endif // FEATURE_SIMD
 
     callType = genActualType(callType);
 
@@ -10654,7 +10656,7 @@ NamedIntrinsic Compiler::lookupNamedIntrinsic(CORINFO_METHOD_HANDLE method)
                     }
                     else
                     {
-#ifdef FEATURE_HW_INTRINSICS
+#ifdef FEATURE_SIMD
                         bool isVectorT = strcmp(className, "Vector`1") == 0;
 
                         if (isVectorT || (strcmp(className, "Vector") == 0))
@@ -10777,12 +10779,12 @@ NamedIntrinsic Compiler::lookupNamedIntrinsic(CORINFO_METHOD_HANDLE method)
                                                                    enclosingClassNames[0], enclosingClassNames[1]);
                             }
                         }
-#endif // FEATURE_HW_INTRINSICS
+#endif // FEATURE_SIMD
 
                         if (result == NI_Illegal)
                         {
                             // This allows the relevant code paths to be dropped as dead code even
-                            // on platforms where FEATURE_HW_INTRINSICS is not supported.
+                            // on platforms where FEATURE_SIMD is not supported.
 
                             if (strcmp(methodName, "get_IsSupported") == 0)
                             {
@@ -10998,10 +11000,12 @@ NamedIntrinsic Compiler::lookupNamedIntrinsic(CORINFO_METHOD_HANDLE method)
                         platformNamespaceName = ".X86";
 #elif defined(TARGET_ARM64)
                         platformNamespaceName = ".Arm";
+#elif defined(TARGET_RISCV64)
+                        platformNamespaceName = ".RiscV";
 #else
 #error Unsupported platform
 #endif
-
+#ifdef FEATURE_SIMD
                         if (strncmp(methodName,
                                     "System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector", 70) == 0)
                         {
@@ -11020,7 +11024,7 @@ NamedIntrinsic Compiler::lookupNamedIntrinsic(CORINFO_METHOD_HANDLE method)
                                 methodName += 80;
                             }
                         }
-
+#endif
                         if ((namespaceName[0] == '\0') || (strcmp(namespaceName, platformNamespaceName) == 0))
                         {
                             CORINFO_SIG_INFO sig;

@@ -9223,6 +9223,7 @@ GenTree* Compiler::fgOptimizeHWIntrinsic(GenTreeHWIntrinsic* node)
 
     switch (intrinsicId)
     {
+#ifdef FEATURE_SIMD
 #if defined(TARGET_ARM64)
         case NI_Vector64_Create:
 #endif // TARGET_ARM64
@@ -9335,6 +9336,7 @@ GenTree* Compiler::fgOptimizeHWIntrinsic(GenTreeHWIntrinsic* node)
             node->SetMorphed(this);
             return node;
         }
+#endif // FEATURE_SIMD
 
         default:
         {
@@ -9763,6 +9765,7 @@ GenTree* Compiler::fgOptimizeHWIntrinsicAssociative(GenTreeHWIntrinsic* tree)
         return nullptr;
     }
 
+#ifdef FEATURE_SIMD
     GenTreeVecCon* cns1 = intrinOp1->Op(2)->AsVecCon();
     GenTreeVecCon* cns2 = tree->Op(2)->AsVecCon();
 
@@ -9798,6 +9801,9 @@ GenTree* Compiler::fgOptimizeHWIntrinsicAssociative(GenTreeHWIntrinsic* tree)
         assert(tree->Op(2) == cns1);
         return tree;
     }
+#else
+    return nullptr;
+#endif // FEATURE_SIMD
 }
 #endif // FEATURE_HW_INTRINSICS
 
@@ -10785,6 +10791,7 @@ GenTree* Compiler::fgMorphHWIntrinsic(GenTreeHWIntrinsic* tree)
             {
                 operand->SetDoNotCSE();
             }
+#ifdef FEATURE_SIMD
             else if (canBenefitFromConstantProp && operand->IsCnsVec())
             {
                 if (tree->ShouldConstantProp(operand, operand->AsVecCon()))
@@ -10792,6 +10799,7 @@ GenTree* Compiler::fgMorphHWIntrinsic(GenTreeHWIntrinsic* tree)
                     operand->SetDoNotCSE();
                 }
             }
+#endif // FEATURE_SIMD
         }
         else
         {
@@ -10849,6 +10857,7 @@ GenTree* Compiler::fgMorphHWIntrinsic(GenTreeHWIntrinsic* tree)
                 std::swap(op1, tree->Op(2));
             }
         }
+#ifdef FEATURE_SIMD
         else
         {
             bool       isScalar = false;
@@ -10886,6 +10895,7 @@ GenTree* Compiler::fgMorphHWIntrinsic(GenTreeHWIntrinsic* tree)
                 }
             }
         }
+#endif // FEATURE_SIMD
 
         // Try to fold it, maybe we get lucky,
         GenTree* morphedTree = gtFoldExpr(tree);
@@ -10909,13 +10919,14 @@ GenTree* Compiler::fgMorphHWIntrinsic(GenTreeHWIntrinsic* tree)
 
             morphedTree = fgOptimizeHWIntrinsic(tree);
         }
-
+#ifdef FEATURE_SIMD
         if (retType != morphedTree->TypeGet())
         {
             assert(varTypeIsMask(morphedTree));
             morphedTree = gtNewSimdCvtMaskToVectorNode(retType, morphedTree, simdBaseJitType, simdSize);
             morphedTree = gtFoldExpr(morphedTree);
         }
+#endif
         return morphedTree;
     }
 

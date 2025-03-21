@@ -11049,7 +11049,7 @@ bool Lowering::TryLowerAndNegativeOne(GenTreeOp* node, GenTree** nextNode)
     return true;
 }
 
-#if defined(FEATURE_HW_INTRINSICS)
+#if defined(FEATURE_SIMD)
 //----------------------------------------------------------------------------------------------
 // Lowering::InsertNewSimdCreateScalarUnsafeNode: Inserts a new simd CreateScalarUnsafe node
 //
@@ -11081,7 +11081,7 @@ GenTree* Lowering::InsertNewSimdCreateScalarUnsafeNode(var_types   simdType,
     }
     return result;
 }
-#endif // FEATURE_HW_INTRINSICS
+#endif // FEATURE_SIMD
 
 //----------------------------------------------------------------------------------------------
 // Lowering::RequireOutgoingArgSpace: Record that the compilation will require
