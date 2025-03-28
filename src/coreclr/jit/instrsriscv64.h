@@ -268,7 +268,12 @@ INST(ctz,           "ctz",            0,   0x60101013)
 INST(ctzw,          "ctzw",           0,   0x6010101b)
 INST(cpop,          "cpop",           0,   0x60201013)
 INST(cpopw,         "cpopw",          0,   0x6020101b)
-
+INST(rol,           "rol",            0,   0x60001033)
+INST(rolw,          "rolw",           0,   0x6000103b)
+INST(ror,           "ror",            0,   0x60005033)
+INST(rorw,          "rorw",           0,   0x6000503b)
+INST(rori,          "rori",           0,   0x60005013)
+INST(roriw,         "roriw",          0,   0x6000501b)
 // clang-format on
 /*****************************************************************************/
 #undef INST
