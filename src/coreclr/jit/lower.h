@@ -114,6 +114,8 @@ private:
     bool TryLowerShiftAddToShxadd(GenTreeOp* tree, GenTree** next);
     bool TryLowerZextAddToAddUw(GenTreeOp* tree, GenTree** next);
     bool TryLowerZextLeftShiftToSlliUw(GenTreeOp* tree, GenTree** next);
+    bool TryRemoveRedundantCast(GenTreeCast* cast);
+    bool IsSignExtended(GenTree* node);
 #endif
     void ContainCheckSelect(GenTreeOp* select);
     void ContainCheckBitCast(GenTreeUnOp* node);

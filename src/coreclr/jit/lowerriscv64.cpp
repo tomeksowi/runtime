@@ -853,6 +853,52 @@ bool Lowering::TryLowerZextLeftShiftToSlliUw(GenTreeOp* tree, GenTree** next)
     return false;
 }
 
+//------------------------------------------------------------------------
+// TryRemoveRedundantCast: Removes redundant cast if it's safe to do so
+//
+// Arguments:
+//    cast - the cast node to check
+//
+// Return Value:
+//    Whether the cast was removed
+//
+bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
+{
+    bool isRedundant = false;
+
+    GenTree* op = cast->CastOp();
+    if (op->OperIs(GT_CAST))
+    {
+        GenTreeCast* srcCast = op->AsCast();
+        if (varTypeIsSmall(srcCast->CastToType()) && varTypeIsLong(cast->CastToType()) &&
+            (srcCast->IsUnsigned() == cast->IsUnsigned()) && !srcCast->gtOverflow() && !cast->gtOverflow())
+        {
+            JITDUMP("Redundant cast to %s removed; the input cast to %s leaves the register %s-extended:\n",
+                    varTypeName(cast->CastToType()), varTypeName(srcCast->CastToType()),
+                    (srcCast->IsUnsigned() ? "zero" : "sign"));
+            isRedundant = true;
+        }
+    }
+
+    if (isRedundant)
+    {
+        LIR::Use use;
+        if (BlockRange().TryGetUse(cast, &use))
+        {
+            use.ReplaceWith(op);
+        }
+        else
+        {
+            cast->SetUnusedValue();
+        }
+        DISPNODE(cast);
+        JITDUMP("\n");
+        BlockRange().Remove(cast);
+        DEBUG_DESTROY_NODE(cast);
+    }
+    return isRedundant;
+}
+
 #ifdef FEATURE_SIMD
 //----------------------------------------------------------------------------------------------
 // Lowering::LowerSIMD: Perform containment analysis for a SIMD intrinsic node.

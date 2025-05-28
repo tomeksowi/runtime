@@ -9215,6 +9215,13 @@ bool Lowering::TryRemoveCast(GenTreeCast* node)
         return false;
     }
 
+#ifdef TARGET_RISCV64
+    if (TryRemoveRedundantCast(node))
+    {
+        return true;
+    }
+#endif
+
     GenTree* op = node->CastOp();
     if (!op->OperIsConst())
     {
@@ -9227,6 +9234,10 @@ bool Lowering::TryRemoveCast(GenTreeCast* node)
     {
         return false;
     }
+
+    JITDUMP("Cast removed:\n");
+    DISPNODE(op);
+    JITDUMP("\n");
 
     op->SetUnusedValue();
     return true;
