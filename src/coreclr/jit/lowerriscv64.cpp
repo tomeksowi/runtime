@@ -864,20 +864,18 @@ bool Lowering::TryLowerZextLeftShiftToSlliUw(GenTreeOp* tree, GenTree** next)
 //
 bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
 {
-    bool isRedundant = false;
+    bool      isRedundant = false;
+    var_types destType    = cast->CastToType();
 
     GenTree* op = cast->CastOp();
     if (op->OperIs(GT_CAST))
     {
-        GenTreeCast* srcCast = op->AsCast();
-        if (varTypeIsSmall(srcCast->CastToType()) && varTypeIsLong(cast->CastToType()) &&
-            (srcCast->IsUnsigned() == cast->IsUnsigned()) && !srcCast->gtOverflow() && !cast->gtOverflow())
-        {
-            JITDUMP("Redundant cast to %s removed; the input cast to %s leaves the register %s-extended:\n",
-                    varTypeName(cast->CastToType()), varTypeName(srcCast->CastToType()),
-                    (srcCast->IsUnsigned() ? "zero" : "sign"));
-            isRedundant = true;
-        }
+        GenTreeCast* inCast     = op->AsCast();
+        var_types    inDestType = inCast->CastToType();
+
+        isRedundant = varTypeIsSmall(inDestType) && varTypeIsLong(destType) &&
+                      (!cast->IsUnsigned() || varTypeIsUnsigned(inDestType)) && !inCast->gtOverflow() &&
+                      !cast->gtOverflow();
     }
 
     if (isRedundant)
@@ -891,6 +889,8 @@ bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
         {
             cast->SetUnusedValue();
         }
+
+        JITDUMP("Redundant cast removed, the input node leaves the register extended:\n");
         DISPNODE(cast);
         JITDUMP("\n");
         BlockRange().Remove(cast);
