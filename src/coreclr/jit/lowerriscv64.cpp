@@ -877,6 +877,10 @@ bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
                       (!cast->IsUnsigned() || varTypeIsUnsigned(inDestType)) && !inCast->gtOverflow() &&
                       !cast->gtOverflow();
     }
+    else if (varTypeIsLong(destType) && !cast->IsUnsigned() && IsSignExtended(op))
+    {
+        isRedundant = true;
+    }
 
     if (isRedundant)
     {
@@ -897,6 +901,28 @@ bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
         DEBUG_DESTROY_NODE(cast);
     }
     return isRedundant;
+}
+
+//------------------------------------------------------------------------
+// IsSignExtended: Checks if a node leaves the destination register sign-extended
+//
+// Arguments:
+//    cast - the cast node to check
+//
+// Return Value:
+//    Whether the cast was removed
+//
+bool Lowering::IsSignExtended(const GenTree* node)
+{
+    assert(node->TypeIs(TYP_INT));
+    if (node->OperIs(GT_AND, GT_AND_NOT, GT_OR, GT_OR_NOT) && node->gtGetOp2()->IsCnsIntOrI())
+    {
+        ssize_t extension = node->gtGetOp2()->AsIntCon()->IconValue() >> 31;
+        ssize_t expected  = node->OperIs(GT_OR, GT_AND_NOT) ? -1 : 0;
+        return extension == expected;
+    }
+    return node->OperIs(GT_ADD, GT_SUB, GT_MUL, GT_MULHI, GT_DIV, GT_UDIV, GT_MOD, GT_UMOD, GT_CAST) ||
+           node->OperIsShiftOrRotate() || node->OperIsCmpCompare() || node->OperIsAtomicOp();
 }
 
 #ifdef FEATURE_SIMD

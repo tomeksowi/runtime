@@ -115,8 +115,9 @@ private:
     bool TryLowerZextAddToAddUw(GenTreeOp* tree, GenTree** next);
     bool TryLowerZextLeftShiftToSlliUw(GenTreeOp* tree, GenTree** next);
     bool TryRemoveRedundantCast(GenTreeCast* cast);
-    bool IsSignExtended(GenTree* node);
-#endif
+
+    static bool IsSignExtended(const GenTree* node);
+#endif // TARGET_RISCV64
     void ContainCheckSelect(GenTreeOp* select);
     void ContainCheckBitCast(GenTreeUnOp* node);
     void ContainCheckCallOperands(GenTreeCall* call);
