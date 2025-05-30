@@ -924,6 +924,11 @@ bool Lowering::IsSignExtended(const GenTree* node)
         ssize_t expected  = node->OperIs(GT_OR, GT_AND_NOT) ? -1 : 0;
         return extension == expected;
     }
+    if (node->OperIs(GT_INTRINSIC))
+    {
+        NamedIntrinsic name = node->AsIntrinsic()->gtIntrinsicName;
+        return Compiler::IsBitCountingIntrinsic(name) || Compiler::IsMathIntrinsic(name);
+    }
     return node->OperIs(GT_ADD, GT_SUB, GT_MUL, GT_MULHI, GT_DIV, GT_UDIV, GT_MOD, GT_UMOD) ||
            node->OperIsShiftOrRotate() || node->OperIsCmpCompare() || node->OperIsAtomicOp();
 }

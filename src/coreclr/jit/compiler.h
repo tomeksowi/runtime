@@ -4858,8 +4858,8 @@ public:
 
     bool IsIntrinsicImplementedByUserCall(NamedIntrinsic intrinsicName);
     bool IsTargetIntrinsic(NamedIntrinsic intrinsicName);
-    bool IsMathIntrinsic(NamedIntrinsic intrinsicName);
-    bool IsBitCountingIntrinsic(NamedIntrinsic intrinsicName);
+    static bool IsMathIntrinsic(NamedIntrinsic intrinsicName);
+    static bool IsBitCountingIntrinsic(NamedIntrinsic intrinsicName);
 
 private:
     //----------------- Importing the method ----------------------------------
