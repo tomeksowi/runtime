@@ -853,6 +853,13 @@ bool Lowering::TryLowerZextLeftShiftToSlliUw(GenTreeOp* tree, GenTree** next)
     return false;
 }
 
+static bool IsImplementedByWInstruction(const GenTree* node)
+{
+    return node->OperIs(GT_ADD, GT_SUB, GT_MUL, GT_MULHI, GT_DIV, GT_UDIV, GT_MOD, GT_UMOD, GT_BITCAST) ||
+           node->OperIsShiftOrRotate() || node->OperIsAtomicOp() ||
+           (node->OperIs(GT_INTRINSIC) && Compiler::IsBitCountingIntrinsic(node->AsIntrinsic()->gtIntrinsicName));
+}
+
 //------------------------------------------------------------------------
 // TryRemoveRedundantCast: Removes redundant cast if it's safe to do so
 //
@@ -871,31 +878,31 @@ bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
     if (varTypeIsFloating(destType) || varTypeIsFloating(op))
         return false;
 
-    if (op->OperIs(GT_CAST))
+    LIR::Use use;
+    if (!BlockRange().TryGetUse(cast, &use))
+        return false;
+
+    if (destType == TYP_INT && varTypeIsLong(op) && !cast->gtOverflow())
+    {
+        // Narrowing unchecked casts are not needed when they are fed to a *w instruction
+        isRedundant = IsImplementedByWInstruction(use.User());
+    }
+    else if (op->OperIs(GT_CAST))
     {
         GenTreeCast* inCast     = op->AsCast();
         var_types    inDestType = inCast->CastToType();
 
-        isRedundant = varTypeIsSmall(inDestType) && varTypeIsLong(destType) &&
-                      (!cast->IsUnsigned() || varTypeIsUnsigned(inDestType)) && !inCast->gtOverflow() &&
-                      !cast->gtOverflow();
+        isRedundant = varTypeIsSmall(inDestType) && !inCast->gtOverflow() && !cast->gtOverflow() &&
+                      (!cast->IsUnsigned() || varTypeIsUnsigned(inDestType));
     }
-    else if (varTypeIsLong(destType) && !cast->IsUnsigned() && IsSignExtended(op))
+    else if (!cast->IsUnsigned() && IsSignExtended(op))
     {
         isRedundant = true;
     }
 
     if (isRedundant)
     {
-        LIR::Use use;
-        if (BlockRange().TryGetUse(cast, &use))
-        {
-            use.ReplaceWith(op);
-        }
-        else
-        {
-            cast->SetUnusedValue();
-        }
+        use.ReplaceWith(op);
 
         JITDUMP("Redundant cast removed, the input node leaves the register extended:\n");
         DISPNODE(cast);
@@ -917,20 +924,16 @@ bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
 //
 bool Lowering::IsSignExtended(const GenTree* node)
 {
-    assert(node->TypeIs(TYP_INT));
+    if (node->TypeIs(TYP_INT))
+        return false;
+
     if (node->OperIs(GT_AND, GT_AND_NOT, GT_OR, GT_OR_NOT) && node->gtGetOp2()->IsCnsIntOrI())
     {
         ssize_t extension = node->gtGetOp2()->AsIntCon()->IconValue() >> 31;
         ssize_t expected  = node->OperIs(GT_OR, GT_AND_NOT) ? -1 : 0;
         return extension == expected;
     }
-    if (node->OperIs(GT_INTRINSIC))
-    {
-        NamedIntrinsic name = node->AsIntrinsic()->gtIntrinsicName;
-        return Compiler::IsBitCountingIntrinsic(name) || Compiler::IsMathIntrinsic(name);
-    }
-    return node->OperIs(GT_ADD, GT_SUB, GT_MUL, GT_MULHI, GT_DIV, GT_UDIV, GT_MOD, GT_UMOD) ||
-           node->OperIsShiftOrRotate() || node->OperIsCmpCompare() || node->OperIsAtomicOp();
+    return IsImplementedByWInstruction(node) || node->OperIsCmpCompare();
 }
 
 #ifdef FEATURE_SIMD
