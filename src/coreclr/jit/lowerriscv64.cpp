@@ -868,6 +868,9 @@ bool Lowering::TryRemoveRedundantCast(GenTreeCast* cast)
     var_types destType    = cast->CastToType();
 
     GenTree* op = cast->CastOp();
+    if (varTypeIsFloating(destType) || varTypeIsFloating(op))
+        return false;
+
     if (op->OperIs(GT_CAST))
     {
         GenTreeCast* inCast     = op->AsCast();
@@ -921,7 +924,7 @@ bool Lowering::IsSignExtended(const GenTree* node)
         ssize_t expected  = node->OperIs(GT_OR, GT_AND_NOT) ? -1 : 0;
         return extension == expected;
     }
-    return node->OperIs(GT_ADD, GT_SUB, GT_MUL, GT_MULHI, GT_DIV, GT_UDIV, GT_MOD, GT_UMOD, GT_CAST) ||
+    return node->OperIs(GT_ADD, GT_SUB, GT_MUL, GT_MULHI, GT_DIV, GT_UDIV, GT_MOD, GT_UMOD) ||
            node->OperIsShiftOrRotate() || node->OperIsCmpCompare() || node->OperIsAtomicOp();
 }
 
