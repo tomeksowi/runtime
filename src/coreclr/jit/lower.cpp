@@ -5322,6 +5322,12 @@ void Lowering::LowerFieldListToFieldListOfRegisters(GenTreeFieldList*   fieldLis
             while (node->OperIs(GT_CAST) && !node->gtOverflow() && varTypeUsesIntReg(node->CastToType()) &&
                    varTypeUsesIntReg(node->CastFromType()) && (genTypeSize(regType) <= genTypeSize(node->CastToType())))
             {
+#ifdef TARGET_RISCV64
+                if ((genTypeSize(regType) == EA_PTRSIZE) && (node->CastFromType() == TYP_INT) && node->IsUnsigned())
+                {
+                    break; // uint is sign-extended on RISC-V, keep the zero-extending cast
+                }
+#endif
                 GenTree* op = node->AsCast()->CastOp();
                 regEntry->SetNode(op);
                 op->ClearContained();
