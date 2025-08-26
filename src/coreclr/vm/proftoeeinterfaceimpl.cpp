@@ -1588,7 +1588,7 @@ HRESULT ProfToEEInterfaceImpl::GetHandleFromThread(ThreadID threadId, HANDLE *ph
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetHandleFromThread 0x%p.\n",
+        "**PROF: GetHandleFromThread %p.\n",
         threadId));
 
     if (!IsManagedThread(threadId))
@@ -1634,7 +1634,7 @@ HRESULT ProfToEEInterfaceImpl::GetObjectSize(ObjectID objectId, ULONG *pcSize)
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetObjectSize 0x%p.\n",
+         "**PROF: GetObjectSize %p.\n",
          objectId));
 
     if (objectId == 0)
@@ -1698,7 +1698,7 @@ HRESULT ProfToEEInterfaceImpl::GetObjectSize2(ObjectID objectId, SIZE_T *pcSize)
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetObjectSize2 0x%p.\n",
+         "**PROF: GetObjectSize2 %p.\n",
          objectId));
 
     if (objectId == 0)
@@ -1760,7 +1760,7 @@ HRESULT ProfToEEInterfaceImpl::IsArrayClass(
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: IsArrayClass 0x%p.\n",
+         "**PROF: IsArrayClass %p.\n",
          classId));
 
     HRESULT hr;
@@ -1838,7 +1838,7 @@ HRESULT ProfToEEInterfaceImpl::GetThreadInfo(ThreadID threadId, DWORD *pdwWin32T
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetThreadInfo 0x%p.\n",
+         "**PROF: GetThreadInfo %p.\n",
          threadId));
 
     if (!IsManagedThread(threadId))
@@ -2011,7 +2011,7 @@ HRESULT ProfToEEInterfaceImpl::GetFunctionFromIP(LPCBYTE ip, FunctionID * pFunct
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetFunctionFromIP 0x%p.\n",
+        "**PROF: GetFunctionFromIP %p.\n",
         ip));
 
     // This call is allowed asynchronously, but the JIT functions take a reader lock.
@@ -2068,7 +2068,7 @@ HRESULT ProfToEEInterfaceImpl::GetFunctionFromIP2(LPCBYTE ip, FunctionID * pFunc
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetFunctionFromIP2 0x%p.\n",
+        "**PROF: GetFunctionFromIP2 %p.\n",
         ip));
 
     HRESULT hr = S_OK;
@@ -2128,7 +2128,7 @@ HRESULT ProfToEEInterfaceImpl::GetTokenAndMetaDataFromFunction(
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetTokenAndMetaDataFromFunction 0x%p.\n",
+         "**PROF: GetTokenAndMetaDataFromFunction %p.\n",
          functionId));
 
     if (functionId == 0)
@@ -2377,7 +2377,7 @@ HRESULT ProfToEEInterfaceImpl::GetCodeInfo(FunctionID functionId, LPCBYTE * pSta
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetCodeInfo 0x%p.\n",
+        "**PROF: GetCodeInfo %p.\n",
         functionId));
 
     // GetCodeInfo may be called asynchronously, and the JIT functions take a reader
@@ -2459,7 +2459,7 @@ HRESULT ProfToEEInterfaceImpl::GetCodeInfo2(FunctionID functionId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetCodeInfo2 0x%p.\n",
+        "**PROF: GetCodeInfo2 %p.\n",
         functionId));
 
     HRESULT hr = S_OK;
@@ -2522,7 +2522,7 @@ HRESULT ProfToEEInterfaceImpl::GetCodeInfo3(FunctionID functionId,
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetCodeInfo3 0x%p 0x%p.\n",
+        "**PROF: GetCodeInfo3 %p %p.\n",
         functionId, reJitId));
 
     HRESULT hr = S_OK;
@@ -2688,7 +2688,7 @@ HRESULT ProfToEEInterfaceImpl::EnumModuleFrozenObjects(ModuleID moduleID,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: EnumModuleFrozenObjects 0x%p.\n",
+         "**PROF: EnumModuleFrozenObjects %p.\n",
          moduleID));
 
     if (NULL == ppEnum)
@@ -2750,7 +2750,7 @@ HRESULT ProfToEEInterfaceImpl::GetArrayObjectInfo(ObjectID objectId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetArrayObjectInfo 0x%p.\n",
+         "**PROF: GetArrayObjectInfo %p.\n",
          objectId));
 
     if (objectId == 0)
@@ -2876,7 +2876,7 @@ HRESULT ProfToEEInterfaceImpl::GetBoxClassLayout(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetBoxClassLayout 0x%p.\n",
+         "**PROF: GetBoxClassLayout %p.\n",
          classId));
 
     if (pBufferOffset == NULL)
@@ -2937,7 +2937,7 @@ HRESULT ProfToEEInterfaceImpl::GetThreadAppDomain(ThreadID threadId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetThreadAppDomain 0x%p.\n",
+         "**PROF: GetThreadAppDomain %p.\n",
          threadId));
 
     if (pAppDomainId == NULL)
@@ -3012,7 +3012,7 @@ HRESULT ProfToEEInterfaceImpl::GetRVAStaticAddress(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetRVAStaticAddress 0x%p, 0x%08x.\n",
+         "**PROF: GetRVAStaticAddress %p, 0x%08x.\n",
          classId,
          fieldToken));
 
@@ -3129,7 +3129,7 @@ HRESULT ProfToEEInterfaceImpl::GetAppDomainStaticAddress(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetAppDomainStaticAddress 0x%p, 0x%08x, 0x%p.\n",
+         "**PROF: GetAppDomainStaticAddress %p, 0x%08x, %p.\n",
          classId,
          fieldToken,
          appDomainId));
@@ -3275,7 +3275,7 @@ HRESULT ProfToEEInterfaceImpl::GetThreadStaticAddress(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetThreadStaticAddress 0x%p, 0x%08x, 0x%p.\n",
+         "**PROF: GetThreadStaticAddress %p, 0x%08x, %p.\n",
          classId,
          fieldToken,
          threadId));
@@ -3351,7 +3351,7 @@ HRESULT ProfToEEInterfaceImpl::GetThreadStaticAddress2(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetThreadStaticAddress2 0x%p, 0x%08x, 0x%p, 0x%p.\n",
+         "**PROF: GetThreadStaticAddress2 %p, 0x%08x, %p, %p.\n",
          classId,
          fieldToken,
          appDomainId,
@@ -3472,7 +3472,7 @@ HRESULT ProfToEEInterfaceImpl::GetContextStaticAddress(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetContextStaticAddress 0x%p, 0x%08x, 0x%p.\n",
+         "**PROF: GetContextStaticAddress %p, 0x%08x, %p.\n",
          classId,
          fieldToken,
          contextId));
@@ -3527,7 +3527,7 @@ HRESULT ProfToEEInterfaceImpl::GetAppDomainsContainingModule(ModuleID moduleId,
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetAppDomainsContainingModule 0x%p, 0x%08x, 0x%p, 0x%p.\n",
+         "**PROF: GetAppDomainsContainingModule %p, 0x%08x, %p, %p.\n",
          moduleId,
          cAppDomainIds,
          pcAppDomainIds,
@@ -3605,7 +3605,7 @@ HRESULT ProfToEEInterfaceImpl::GetStaticFieldInfo(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetStaticFieldInfo 0x%p, 0x%08x.\n",
+         "**PROF: GetStaticFieldInfo %p, 0x%08x.\n",
          classId,
          fieldToken));
 
@@ -3709,7 +3709,7 @@ HRESULT ProfToEEInterfaceImpl::GetClassIDInfo2(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetClassIDInfo2 0x%p.\n",
+        "**PROF: GetClassIDInfo2 %p.\n",
         classId));
 
     //
@@ -3868,7 +3868,7 @@ HRESULT ProfToEEInterfaceImpl::GetModuleInfo(ModuleID     moduleId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetModuleInfo 0x%p.\n",
+        "**PROF: GetModuleInfo %p.\n",
         moduleId));
 
     // Parameter validation is taken care of in GetModuleInfo2.
@@ -3991,7 +3991,7 @@ HRESULT ProfToEEInterfaceImpl::GetModuleInfo2(ModuleID     moduleId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetModuleInfo2 0x%p.\n",
+        "**PROF: GetModuleInfo2 %p.\n",
         moduleId));
 
     if (moduleId == 0)
@@ -4143,7 +4143,7 @@ HRESULT ProfToEEInterfaceImpl::GetModuleMetaData(ModuleID    moduleId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetModuleMetaData 0x%p, 0x%08x.\n",
+        "**PROF: GetModuleMetaData %p, 0x%08x.\n",
         moduleId,
         dwOpenFlags));
 
@@ -4226,7 +4226,7 @@ HRESULT ProfToEEInterfaceImpl::GetILFunctionBody(ModuleID    moduleId,
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetILFunctionBody 0x%p, 0x%08x.\n",
+         "**PROF: GetILFunctionBody %p, 0x%08x.\n",
          moduleId,
          methodId));
 
@@ -4354,7 +4354,7 @@ HRESULT ProfToEEInterfaceImpl::GetILFunctionBodyAllocator(ModuleID         modul
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetILFunctionBodyAllocator 0x%p.\n",
+        "**PROF: GetILFunctionBodyAllocator %p.\n",
         moduleId));
 
     if ((moduleId == 0) || (ppMalloc == NULL))
@@ -4408,7 +4408,7 @@ HRESULT ProfToEEInterfaceImpl::SetILFunctionBody(ModuleID    moduleId,
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: SetILFunctionBody 0x%p, 0x%08x.\n",
+         "**PROF: SetILFunctionBody %p, 0x%08x.\n",
          moduleId,
          methodId));
 
@@ -4483,7 +4483,7 @@ HRESULT ProfToEEInterfaceImpl::SetILInstrumentedCodeMap(FunctionID functionId,
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: SetILInstrumentedCodeMap 0x%p, %d.\n",
+         "**PROF: SetILInstrumentedCodeMap %p, %d.\n",
          functionId,
          fStartJit));
 
@@ -4640,7 +4640,7 @@ HRESULT ProfToEEInterfaceImpl::GetThreadContext(ThreadID threadId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetThreadContext 0x%p.\n",
+         "**PROF: GetThreadContext %p.\n",
          threadId));
 
     if (!IsManagedThread(threadId))
@@ -4690,7 +4690,7 @@ HRESULT ProfToEEInterfaceImpl::GetClassIDInfo(ClassID classId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetClassIDInfo 0x%p.\n",
+        "**PROF: GetClassIDInfo %p.\n",
         classId));
 
     if (classId == 0)
@@ -4778,7 +4778,7 @@ HRESULT ProfToEEInterfaceImpl::GetFunctionInfo(FunctionID functionId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetFunctionInfo 0x%p.\n",
+        "**PROF: GetFunctionInfo %p.\n",
         functionId));
 
     if (functionId == 0)
@@ -4848,7 +4848,7 @@ HRESULT ProfToEEInterfaceImpl::GetILToNativeMapping(FunctionID functionId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetILToNativeMapping 0x%p.\n",
+        "**PROF: GetILToNativeMapping %p.\n",
         functionId));
 
     return GetILToNativeMapping2(functionId, 0, cMap, pcMap, map);
@@ -4884,7 +4884,7 @@ HRESULT ProfToEEInterfaceImpl::GetILToNativeMapping2(FunctionID functionId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetILToNativeMapping2 0x%p 0x%p.\n",
+        "**PROF: GetILToNativeMapping2 %p %p.\n",
         functionId, reJitId));
 
     if (functionId == 0)
@@ -4971,7 +4971,7 @@ HRESULT ProfToEEInterfaceImpl::GetClassFromObject(ObjectID objectId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetClassFromObject 0x%p.\n",
+         "**PROF: GetClassFromObject %p.\n",
          objectId));
 
     if (objectId == 0)
@@ -5026,7 +5026,7 @@ HRESULT ProfToEEInterfaceImpl::GetClassFromToken(ModuleID    moduleId,
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetClassFromToken 0x%p, 0x%08x.\n",
+         "**PROF: GetClassFromToken %p, 0x%08x.\n",
          moduleId,
          typeDef));
 
@@ -5122,7 +5122,7 @@ HRESULT ProfToEEInterfaceImpl::GetClassFromTokenAndTypeArgs(ModuleID moduleID,
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetClassFromTokenAndTypeArgs 0x%p, 0x%08x.\n",
+         "**PROF: GetClassFromTokenAndTypeArgs %p, 0x%08x.\n",
          moduleID,
          typeDef));
 
@@ -5259,7 +5259,7 @@ HRESULT ProfToEEInterfaceImpl::GetFunctionFromToken(ModuleID moduleId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetFunctionFromToken 0x%p, 0x%08x.\n",
+         "**PROF: GetFunctionFromToken %p, 0x%08x.\n",
          moduleId,
          typeDef));
 
@@ -5351,7 +5351,7 @@ HRESULT ProfToEEInterfaceImpl::GetFunctionFromTokenAndTypeArgs(ModuleID moduleID
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetFunctionFromTokenAndTypeArgs 0x%p, 0x%08x, 0x%p.\n",
+         "**PROF: GetFunctionFromTokenAndTypeArgs %p, 0x%08x, %p.\n",
          moduleID,
          funcDef,
          classId));
@@ -5463,7 +5463,7 @@ HRESULT ProfToEEInterfaceImpl::GetAppDomainInfo(AppDomainID appDomainId,
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetAppDomainInfo 0x%p.\n",
+         "**PROF: GetAppDomainInfo %p.\n",
          appDomainId));
 
     if (appDomainId == 0)
@@ -5557,7 +5557,7 @@ HRESULT ProfToEEInterfaceImpl::GetAssemblyInfo(AssemblyID    assemblyId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
          LL_INFO1000,
-         "**PROF: GetAssemblyInfo 0x%p.\n",
+         "**PROF: GetAssemblyInfo %p.\n",
          assemblyId));
 
     if (assemblyId == 0)
@@ -5660,7 +5660,7 @@ HRESULT ProfToEEInterfaceImpl::SetEnterLeaveFunctionHooks(FunctionEnter * pFuncE
     // the enter/leave events are immutable and must also be set during initialization.
     PROFILER_TO_CLR_ENTRYPOINT_SET_ELT((LF_CORPROF,
                                         LL_INFO10,
-                                        "**PROF: SetEnterLeaveFunctionHooks 0x%p, 0x%p, 0x%p.\n",
+                                        "**PROF: SetEnterLeaveFunctionHooks %p, %p, %p.\n",
                                         pFuncEnter,
                                         pFuncLeave,
                                         pFuncTailcall));
@@ -5701,7 +5701,7 @@ HRESULT ProfToEEInterfaceImpl::SetEnterLeaveFunctionHooks2(FunctionEnter2 * pFun
     // the enter/leave events are immutable and must also be set during initialization.
     PROFILER_TO_CLR_ENTRYPOINT_SET_ELT((LF_CORPROF,
                                         LL_INFO10,
-                                        "**PROF: SetEnterLeaveFunctionHooks2 0x%p, 0x%p, 0x%p.\n",
+                                        "**PROF: SetEnterLeaveFunctionHooks2 %p, %p, %p.\n",
                                         pFuncEnter,
                                         pFuncLeave,
                                         pFuncTailcall));
@@ -5743,7 +5743,7 @@ HRESULT ProfToEEInterfaceImpl::SetEnterLeaveFunctionHooks3(FunctionEnter3 * pFun
     // the enter/leave events are immutable and must also be set during initialization.
     PROFILER_TO_CLR_ENTRYPOINT_SET_ELT((LF_CORPROF,
                                         LL_INFO10,
-                                        "**PROF: SetEnterLeaveFunctionHooks3 0x%p, 0x%p, 0x%p.\n",
+                                        "**PROF: SetEnterLeaveFunctionHooks3 %p, %p, %p.\n",
                                         pFuncEnter3,
                                         pFuncLeave3,
                                         pFuncTailcall3));
@@ -5788,7 +5788,7 @@ HRESULT ProfToEEInterfaceImpl::SetEnterLeaveFunctionHooks3WithInfo(FunctionEnter
     // the enter/leave events are immutable and must also be set during initialization.
     PROFILER_TO_CLR_ENTRYPOINT_SET_ELT((LF_CORPROF,
                                         LL_INFO10,
-                                        "**PROF: SetEnterLeaveFunctionHooks3WithInfo 0x%p, 0x%p, 0x%p.\n",
+                                        "**PROF: SetEnterLeaveFunctionHooks3WithInfo %p, %p, %p.\n",
                                         pFuncEnter3WithInfo,
                                         pFuncLeave3WithInfo,
                                         pFuncTailcall3WithInfo));
@@ -5829,7 +5829,7 @@ HRESULT ProfToEEInterfaceImpl::SetFunctionIDMapper(FunctionIDMapper *pFunc)
 
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC((LF_CORPROF,
                                       LL_INFO10,
-                                      "**PROF: SetFunctionIDMapper 0x%p.\n",
+                                      "**PROF: SetFunctionIDMapper %p.\n",
                                       pFunc));
 
     if (!g_profControlBlock.IsMainProfiler(this))
@@ -5866,7 +5866,7 @@ HRESULT ProfToEEInterfaceImpl::SetFunctionIDMapper2(FunctionIDMapper2 *pFunc, vo
 
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC((LF_CORPROF,
                                       LL_INFO10,
-                                      "**PROF: SetFunctionIDMapper2. pFunc: 0x%p. clientData: 0x%p.\n",
+                                      "**PROF: SetFunctionIDMapper2. pFunc: %p. clientData: %p.\n",
                                       pFunc,
                                       clientData));
 
@@ -5949,7 +5949,7 @@ HRESULT ProfToEEInterfaceImpl::GetFunctionInfo2(FunctionID funcId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetFunctionInfo2 0x%p.\n",
+        "**PROF: GetFunctionInfo2 %p.\n",
         funcId));
 
     //
@@ -6147,7 +6147,7 @@ HRESULT ProfToEEInterfaceImpl::IsFunctionDynamic(FunctionID functionId, BOOL *is
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
             LL_INFO1000,
-            "**PROF: IsFunctionDynamic 0x%p.\n",
+            "**PROF: IsFunctionDynamic %p.\n",
             functionId));
 
     //
@@ -6215,7 +6215,7 @@ HRESULT ProfToEEInterfaceImpl::GetFunctionFromIP3(LPCBYTE ip, FunctionID * pFunc
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
             LL_INFO1000,
-            "**PROF: GetFunctionFromIP3 0x%p.\n",
+            "**PROF: GetFunctionFromIP3 %p.\n",
             ip));
 
     HRESULT hr = S_OK;
@@ -6300,7 +6300,7 @@ HRESULT ProfToEEInterfaceImpl::GetDynamicFunctionInfo(FunctionID functionId,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
             LL_INFO1000,
-            "**PROF: GetDynamicFunctionInfo 0x%p.\n",
+            "**PROF: GetDynamicFunctionInfo %p.\n",
             functionId));
 
     //
@@ -6422,7 +6422,7 @@ HRESULT ProfToEEInterfaceImpl::GetNativeCodeStartAddresses(FunctionID functionID
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
     (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetNativeCodeStartAddresses 0x%p 0x%p.\n",
+        "**PROF: GetNativeCodeStartAddresses %p %p.\n",
         functionID, reJitId));
 
     HRESULT hr = S_OK;
@@ -6522,7 +6522,7 @@ HRESULT ProfToEEInterfaceImpl::GetILToNativeMapping3(UINT_PTR pNativeCodeStartAd
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetILToNativeMapping3 0x%p.\n",
+        "**PROF: GetILToNativeMapping3 %p.\n",
         pNativeCodeStartAddress));
 
     if (pNativeCodeStartAddress == (PCODE)NULL)
@@ -6588,7 +6588,7 @@ HRESULT ProfToEEInterfaceImpl::GetCodeInfo4(UINT_PTR pNativeCodeStartAddress,
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetCodeInfo4 0x%p.\n",
+        "**PROF: GetCodeInfo4 %p.\n",
         pNativeCodeStartAddress));
 
     if ((cCodeInfos != 0) && (codeInfos == NULL))
@@ -6700,7 +6700,7 @@ HRESULT ProfToEEInterfaceImpl::EnumerateObjectReferences(ObjectID objectId, Obje
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: EnumerateObjectReferences 0x%p.\n",
+        "**PROF: EnumerateObjectReferences %p.\n",
         objectId));
 
     if (callback == nullptr)
@@ -6750,7 +6750,7 @@ HRESULT ProfToEEInterfaceImpl::IsFrozenObject(ObjectID objectId, BOOL *pbFrozen)
         kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: IsFrozenObject 0x%p.\n",
+        "**PROF: IsFrozenObject %p.\n",
         objectId));
 
     *pbFrozen = GCHeapUtilities::GetGCHeap()->IsInFrozenSegment((Object*)objectId) ? TRUE : FALSE;
@@ -7914,7 +7914,7 @@ HRESULT ProfToEEInterfaceImpl::GetClassLayout(ClassID classID,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetClassLayout 0x%p.\n",
+        "**PROF: GetClassLayout %p.\n",
         classID));
 
     //
@@ -8524,7 +8524,7 @@ HRESULT ProfToEEInterfaceImpl::DoStackSnapshot(ThreadID thread,
     PROFILER_TO_CLR_ENTRYPOINT_ASYNC_EX(kP2EEAllowableAfterAttach,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: DoStackSnapshot 0x%p, 0x%p, 0x%08x, 0x%p, 0x%p, 0x%08x.\n",
+        "**PROF: DoStackSnapshot %p, %p, 0x%08x, %p, %p, 0x%08x.\n",
         thread,
         callback,
         infoFlags,
@@ -9168,7 +9168,7 @@ HRESULT ProfToEEInterfaceImpl::GetObjectGeneration(ObjectID objectId,
     PROFILER_TO_CLR_ENTRYPOINT_SYNC_EX(kP2EEAllowableAfterAttach,
                                        (LF_CORPROF,
                                        LL_INFO1000,
-                                       "**PROF: GetObjectGeneration 0x%p.\n",
+                                       "**PROF: GetObjectGeneration %p.\n",
                                        objectId));
 
 
@@ -9231,7 +9231,7 @@ HRESULT ProfToEEInterfaceImpl::GetReJITIDs(
         kP2EEAllowableAfterAttach | kP2EETriggers,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: GetReJITIDs 0x%p.\n",
+        "**PROF: GetReJITIDs %p.\n",
          functionId));
 
     if (functionId == 0)

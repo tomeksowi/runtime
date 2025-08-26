@@ -3146,7 +3146,7 @@ CorUnix::PROCAddThread(
     pGThreadList = pTargetThread;
     g_dwThreadCount += 1;
 
-    TRACE("Thread 0x%p (id %#x) added to the process thread list\n",
+    TRACE("Thread %p (id %#x) added to the process thread list\n",
           pTargetThread, pTargetThread->GetThreadId());
 
     minipal_mutex_leave(&g_csProcess);
@@ -3190,7 +3190,7 @@ CorUnix::PROCRemoveThread(
     if (curThread == pTargetThread)
     {
         pGThreadList =  curThread->GetNext();
-        TRACE("Thread 0x%p (id %#x) removed from the process thread list\n",
+        TRACE("Thread %p (id %#x) removed from the process thread list\n",
             pTargetThread, pTargetThread->GetThreadId());
         goto EXIT;
     }
@@ -3601,7 +3601,7 @@ void PROCDumpThreadList()
     pThread = pGThreadList;
     while (NULL != pThread)
     {
-        TRACE ("    {pThr=0x%p tid=%#x lwpid=%#x state=%d finsusp=%d}\n",
+        TRACE ("    {pThr=%p tid=%#x lwpid=%#x state=%d finsusp=%d}\n",
                pThread, (int)pThread->GetThreadId(), (int)pThread->GetLwpId(),
                (int)pThread->synchronizationInfo.GetThreadState(),
                (int)pThread->suspensionInfo.GetSuspendedForShutdown());

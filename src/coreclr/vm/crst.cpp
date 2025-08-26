@@ -579,7 +579,7 @@ void CrstBase::DebugDestroy()
         CONSISTENCY_CHECK_MSGF(
             ((m_prev == NULL) && (m_next == NULL) && m_holderthreadid.IsUnknown()),
             ("CRST '%s' is destroyed while being held in non-shutdown scenario.\n"
-            "this=0x%p, m_prev=0x%p. m_next=0x%p", m_tag, this, this->m_prev, this->m_next));
+            "this=%p, m_prev=%p. m_next=%p", m_tag, this, this->m_prev, this->m_next));
     }
 
     FillMemory(&m_lock, sizeof(m_lock), 0xcc);

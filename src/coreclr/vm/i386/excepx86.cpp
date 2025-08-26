@@ -297,16 +297,16 @@ void VerifyValidTransitionFromManagedCode(Thread *pThread, CrawlFrame *pCF)
     // bad.
     CONSISTENCY_CHECK_MSGF(IsUnmanagedToManagedSEHHandler(pEHR),
                            ("Invalid transition into managed code!\n\n"
-                            "We're walking this thread's stack and we've reached a managed frame at Esp=0x%p. "
+                            "We're walking this thread's stack and we've reached a managed frame at Esp=%p. "
                             "(The method is %s::%s) "
-                            "The very next FS:0 record (0x%p) up from this point on the stack should be one of "
+                            "The very next FS:0 record (%p) up from this point on the stack should be one of "
                             "our 'unmanaged to managed SEH handlers', but its not... its something else, and "
                             "that's very bad. It indicates that someone managed to call into managed code without "
                             "setting up the proper exception handling.\n\n"
                             "Get a good unmanaged stack trace for this thread. All FS:0 records are on the stack, "
                             "so you can see who installed the last handler. Somewhere between that function and "
                             "where the thread is now is where the bad transition occurred.\n\n"
-                            "A little extra info: FS:0 = 0x%p, pEHR->Handler = 0x%p\n",
+                            "A little extra info: FS:0 = %p, pEHR->Handler = %p\n",
                             GetRegdisplaySP(pCF->GetRegisterSet()),
                             pFunction ->m_pszDebugClassName,
                             pFunction ->m_pszDebugMethodName,
@@ -655,14 +655,14 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
         {
             eClsName = e->GetMethodTable()->GetDebugClassName();
     }
-        LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: exception: 0x%08X, class: '%s', IP: 0x%p\n",
+        LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: exception: 0x%08X, class: '%s', IP: %p\n",
              exceptionCode, eClsName, pContext ? GetIP(pContext) : NULL));
     }
 #endif
 
     EXCEPTION_POINTERS exceptionPointers = {pExceptionRecord, pContext};
 
-    STRESS_LOG4(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: setting boundaries: Exinfo: 0x%p, BottomMostHandler:0x%p, SearchBoundary:0x%p, TopFrame:0x%p\n",
+    STRESS_LOG4(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: setting boundaries: Exinfo: %p, BottomMostHandler:%p, SearchBoundary:%p, TopFrame:%p\n",
          pExInfo, pExInfo->m_pBottomMostHandler, pExInfo->m_pSearchBoundary, tct.pTopFrame);
 
     // Here we are trying to decide if we are coming in as:
@@ -675,7 +675,7 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
     // The OS calls each registered handler in the chain, passing its establisher frame to it.
     if (pExInfo->m_pBottomMostHandler != NULL && pEstablisherFrame > pExInfo->m_pBottomMostHandler)
     {
-        STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: detected subsequent handler.  ExInfo:0x%p, BottomMost:0x%p SearchBoundary:0x%p\n",
+        STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: detected subsequent handler.  ExInfo:%p, BottomMost:%p SearchBoundary:%p\n",
                     pExInfo, pExInfo->m_pBottomMostHandler, pExInfo->m_pSearchBoundary);
 
         // If the establisher frame of this handler is greater than the bottommost then it must have been
@@ -735,7 +735,7 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
             bNestedException = TRUE;
 
             // case 3: this is a nested exception. Need to save and restore the thread info
-            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: ExInfo:0x%p detected nested exception 0x%p < 0x%p\n",
+            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: ExInfo:%p detected nested exception %p < %p\n",
                         pExInfo, pEstablisherFrame, pExInfo->m_pBottomMostHandler);
 
             EXCEPTION_REGISTRATION_RECORD* pNestedER = TryFindNestedEstablisherFrame(pEstablisherFrame);
@@ -775,7 +775,7 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
                 pNestedExInfo = &((NestedHandlerExRecord*)pNestedER)->m_handlerInfo;
             }
 
-            LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: PushExInfo() current: 0x%p previous: 0x%p\n",
+            LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: PushExInfo() current: %p previous: %p\n",
                  pExInfo->m_StackAddress, pNestedExInfo->m_StackAddress));
 
             _ASSERTE(pNestedExInfo);
@@ -864,11 +864,11 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
                 // This cannot be nested exceptions - they are handled earlier (see above).
                 _ASSERTE(!bNestedException);
 
-                LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: Bottom-most handler (0x%p) is the same as EstablisherFrame.\n",
+                LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: Bottom-most handler (%p) is the same as EstablisherFrame.\n",
                  pExInfo->m_pBottomMostHandler));
-                LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: Exception record in exception tracker is 0x%p, while that of new exception is 0x%p.\n",
+                LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: Exception record in exception tracker is %p, while that of new exception is %p.\n",
                  pExInfo->m_pExceptionRecord, pExceptionRecord));
-                LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: Resetting exception tracker (0x%p).\n", pExInfo));
+                LOG((LF_EH, LL_INFO100, "CPFH_RealFirstPassHandler: Resetting exception tracker (%p).\n", pExInfo));
 
                 // This will reset the exception tracker state, including the corruption severity.
                 pExInfo->Init();
@@ -902,7 +902,7 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
 
             // now we've got a CLR exception, fall through to so see if we handle it
 
-            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: fall through ExInfo:0x%p setting m_pBottomMostHandler to 0x%p from 0x%p\n",
+            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: fall through ExInfo:%p setting m_pBottomMostHandler to %p from %p\n",
                         pExInfo, pEstablisherFrame, pExInfo->m_pBottomMostHandler);
             pExInfo->m_pBottomMostHandler = pEstablisherFrame;
         }
@@ -915,7 +915,7 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
             // Update the throwable from the last thrown object. Note: this may cause OOM, in which case we replace
             // both throwables with the preallocated OOM exception.
             pThread->SafeSetThrowables(pThread->LastThrownObject());
-            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: rethrow non-CLR ExInfo:0x%p setting m_pBottomMostHandler to 0x%p from 0x%p\n",
+            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: rethrow non-CLR ExInfo:%p setting m_pBottomMostHandler to %p from %p\n",
                         pExInfo, pEstablisherFrame, pExInfo->m_pBottomMostHandler);
             pExInfo->m_pBottomMostHandler = pEstablisherFrame;
         }
@@ -936,7 +936,7 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
             // We need to set m_pBottomMostHandler here, Thread::IsExceptionInProgress returns 1.
             // This is a necessary part of suppressing thread abort exceptions in the constructor
             // of any exception object we might create.
-            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: setting ExInfo:0x%p m_pBottomMostHandler for IsExceptionInProgress to 0x%p from 0x%p\n",
+            STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_RealFirstPassHandler: setting ExInfo:%p m_pBottomMostHandler for IsExceptionInProgress to %p from %p\n",
                         pExInfo, pEstablisherFrame, pExInfo->m_pBottomMostHandler);
             pExInfo->m_pBottomMostHandler = pEstablisherFrame;
 
@@ -1023,7 +1023,7 @@ CPFH_RealFirstPassHandler(                  // ExceptionContinueSearch, etc.
 
     // We have searched this far.
     pExInfo->m_pSearchBoundary = tct.pTopFrame;
-    LOG((LF_EH, LL_INFO1000, "CPFH_RealFirstPassHandler: set pSearchBoundary to 0x%p\n", pExInfo->m_pSearchBoundary));
+    LOG((LF_EH, LL_INFO1000, "CPFH_RealFirstPassHandler: set pSearchBoundary to %p\n", pExInfo->m_pSearchBoundary));
 
     if ((found == LFH_NOT_FOUND)
 #ifdef DEBUGGING_SUPPORTED
@@ -1322,8 +1322,8 @@ CPFH_UnwindFrames1(Thread* pThread, EXCEPTION_REGISTRATION_RECORD* pEstablisherF
 
     UnwindFrames(pThread, &tct);
 
-    LOG((LF_EH, LL_INFO1000, "CPFH_UnwindFrames1: after unwind ec:%#x, tct.pTopFrame:0x%p, pSearchBndry:0x%p\n"
-                             "                    pEstFrame:0x%p, IsC+NestExRec:%d, !Nest||Active:%d\n",
+    LOG((LF_EH, LL_INFO1000, "CPFH_UnwindFrames1: after unwind ec:%#x, tct.pTopFrame:%p, pSearchBndry:%p\n"
+                             "                    pEstFrame:%p, IsC+NestExRec:%d, !Nest||Active:%d\n",
          exceptionCode, tct.pTopFrame, pExInfo->m_pSearchBoundary, pEstablisherFrame,
          IsComPlusNestedExceptionRecord(pEstablisherFrame),
          (!IsComPlusNestedExceptionRecord(pEstablisherFrame) || reinterpret_cast<NestedHandlerExRecord*>(pEstablisherFrame)->m_ActiveForUnwind)));
@@ -1372,7 +1372,7 @@ CPFH_UnwindHandler(EXCEPTION_RECORD *pExceptionRecord,
 
     ExInfo* pExInfo = &(pThread->GetExceptionState()->m_currentExInfo);
 
-    STRESS_LOG4(LF_EH, LL_INFO100, "In CPFH_UnwindHandler EHCode = %x EIP = %x with ESP = %x, pEstablisherFrame = 0x%p\n", exceptionCode,
+    STRESS_LOG4(LF_EH, LL_INFO100, "In CPFH_UnwindHandler EHCode = %x EIP = %x with ESP = %x, pEstablisherFrame = %p\n", exceptionCode,
         pContext ? GetIP(pContext) : 0, pContext ? GetSP(pContext) : 0, pEstablisherFrame);
 
     // We always want to be in co-operative mode when we run this function.  Whenever we return
@@ -1400,7 +1400,7 @@ CPFH_UnwindHandler(EXCEPTION_RECORD *pExceptionRecord,
                 // disappear.)
                 EXCEPTION_REGISTRATION_RECORD *pNextBottomMost = GetNextCOMPlusSEHRecord(pHandler->m_pCurrentHandler);
 
-                STRESS_LOG3(LF_EH, LL_INFO10000, "COMPlusNestedExceptionHandler: setting ExInfo:0x%p m_pBottomMostHandler from 0x%p to 0x%p\n",
+                STRESS_LOG3(LF_EH, LL_INFO10000, "COMPlusNestedExceptionHandler: setting ExInfo:%p m_pBottomMostHandler from %p to %p\n",
                     pHandler->m_pCurrentExInfo, pHandler->m_pCurrentExInfo->m_pBottomMostHandler, pNextBottomMost);
 
                 pHandler->m_pCurrentExInfo->m_pBottomMostHandler = pNextBottomMost;
@@ -1439,7 +1439,7 @@ CPFH_UnwindHandler(EXCEPTION_RECORD *pExceptionRecord,
         // If there is no previous CLR SEH handler, GetNextCOMPlusSEHRecord() will return -1.  Much later, we will dereference that and AV.
         _ASSERTE (pNextBottomMost != EXCEPTION_CHAIN_END);
 
-        STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_UnwindHandler: setting ExInfo:0x%p m_pBottomMostHandler from 0x%p to 0x%p\n",
+        STRESS_LOG3(LF_EH, LL_INFO10000, "CPFH_UnwindHandler: setting ExInfo:%p m_pBottomMostHandler from %p to %p\n",
             pExInfo, pExInfo->m_pBottomMostHandler, pNextBottomMost);
 
         pExInfo->m_pBottomMostHandler = pNextBottomMost;
@@ -1479,7 +1479,7 @@ EXCEPTION_HANDLER_IMPL(COMPlusFrameHandler)
     WRAPPER_NO_CONTRACT;
     _ASSERTE(!DebugIsEECxxException(pExceptionRecord) && "EE C++ Exception leaked into managed code!");
 
-    STRESS_LOG5(LF_EH, LL_INFO100, "In COMPlusFrameHandler EH code = %x  flag = %x EIP = %x with ESP = %x, pEstablisherFrame = 0x%p\n",
+    STRESS_LOG5(LF_EH, LL_INFO100, "In COMPlusFrameHandler EH code = %x  flag = %x EIP = %x with ESP = %x, pEstablisherFrame = %p\n",
         pExceptionRecord->ExceptionCode, pExceptionRecord->ExceptionFlags,
         pContext ? GetIP(pContext) : 0, pContext ? GetSP(pContext) : 0, pEstablisherFrame);
 
@@ -2862,7 +2862,7 @@ void ResumeAtJitEH(CrawlFrame* pCf,
 
         while (pPrevNestedInfo && pPrevNestedInfo->m_StackAddress < dEsp)
         {
-            LOG((LF_EH, LL_INFO1000, "ResumeAtJitEH: popping nested ExInfo at 0x%p\n", pPrevNestedInfo->m_StackAddress));
+            LOG((LF_EH, LL_INFO1000, "ResumeAtJitEH: popping nested ExInfo at %p\n", pPrevNestedInfo->m_StackAddress));
 
             pPrevNestedInfo->DestroyExceptionHandle();
 
@@ -2919,7 +2919,7 @@ void ResumeAtJitEH(CrawlFrame* pCf,
         // bottom-most handler the one BEFORE the nested record.
         if (pExInfo->m_pBottomMostHandler < pNewBottomMostHandler)
         {
-            STRESS_LOG3(LF_EH, LL_INFO10000, "ResumeAtJitEH: setting ExInfo:0x%p m_pBottomMostHandler from 0x%p to 0x%p\n",
+            STRESS_LOG3(LF_EH, LL_INFO10000, "ResumeAtJitEH: setting ExInfo:%p m_pBottomMostHandler from %p to %p\n",
                 pExInfo, pExInfo->m_pBottomMostHandler, pNewBottomMostHandler);
           pExInfo->m_pBottomMostHandler = pNewBottomMostHandler;
         }
@@ -3122,7 +3122,7 @@ EXCEPTION_HANDLER_IMPL(COMPlusNestedExceptionHandler)
         {
             _ASSERTE(pPrevNestedInfo);
 
-            LOG((LF_EH, LL_INFO100, "COMPlusNestedExceptionHandler: PopExInfo(): popping nested ExInfo at 0x%p\n", pPrevNestedInfo));
+            LOG((LF_EH, LL_INFO100, "COMPlusNestedExceptionHandler: PopExInfo(): popping nested ExInfo at %p\n", pPrevNestedInfo));
 
             pPrevNestedInfo->DestroyExceptionHandle();
 

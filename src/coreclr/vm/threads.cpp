@@ -673,7 +673,7 @@ Thread* SetupThread()
 
             if (pThread != NULL)
             {
-                STRESS_LOG2(LF_SYNC, LL_INFO1000, "T::ST - recycling thread 0x%p (state: 0x%x)\n", pThread, pThread->m_State.Load());
+                STRESS_LOG2(LF_SYNC, LL_INFO1000, "T::ST - recycling thread %p (state: 0x%x)\n", pThread, pThread->m_State.Load());
             }
         }
 
@@ -2592,7 +2592,7 @@ void Thread::CleanupDetachedThreads()
 
         if (thread->IsDetached())
         {
-            STRESS_LOG1(LF_SYNC, LL_INFO1000, "T::CDT - detaching thread 0x%p\n", thread);
+            STRESS_LOG1(LF_SYNC, LL_INFO1000, "T::CDT - detaching thread %p\n", thread);
 
             // Unmark that the thread is detached while we have the
             // thread store lock. This will ensure that no other
@@ -2646,7 +2646,7 @@ void Thread::CleanupDetachedThreads()
         }
         else if (thread->HasThreadState(TS_Finalized))
         {
-            STRESS_LOG1(LF_SYNC, LL_INFO1000, "T::CDT - finalized thread 0x%p\n", thread);
+            STRESS_LOG1(LF_SYNC, LL_INFO1000, "T::CDT - finalized thread %p\n", thread);
 
             thread->ResetThreadState(TS_Finalized);
             // We have finalized the managed Thread object.  Now it is time to clean up the unmanaged part
@@ -6283,7 +6283,7 @@ static void DebugLogStackRegionMBIs(UINT_PTR uLowAddress, UINT_PTR uHighAddress)
 
         UINT_PTR uRegionSize = uStartOfNextRegion - uStartOfThisRegion;
 
-        LOG((LF_EH, LL_INFO1000, "0x%p -> 0x%p (%d pg)  ", uStartOfThisRegion, uStartOfNextRegion - 1, uRegionSize / GetOsPageSize()));
+        LOG((LF_EH, LL_INFO1000, "%p -> %p (%d pg)  ", uStartOfThisRegion, uStartOfNextRegion - 1, uRegionSize / GetOsPageSize()));
         DebugLogMBIFlags(meminfo.State, meminfo.Protect);
         LOG((LF_EH, LL_INFO1000, "\n"));
 
@@ -6321,10 +6321,10 @@ void Thread::DebugLogStackMBIs()
     UINT_PTR uStackSize         = uStackBase - uStackLimit;
 
     LOG((LF_EH, LL_INFO1000, "----------------------------------------------------------------------\n"));
-    LOG((LF_EH, LL_INFO1000, "Stack Snapshot 0x%p -> 0x%p (%d pg)\n", uStackLimit, uStackBase, uStackSize / GetOsPageSize()));
+    LOG((LF_EH, LL_INFO1000, "Stack Snapshot %p -> %p (%d pg)\n", uStackLimit, uStackBase, uStackSize / GetOsPageSize()));
     if (pThread)
     {
-        LOG((LF_EH, LL_INFO1000, "Last normal addr: 0x%p\n", pThread->GetLastNormalStackAddress()));
+        LOG((LF_EH, LL_INFO1000, "Last normal addr: %p\n", pThread->GetLastNormalStackAddress()));
     }
 
     DebugLogStackRegionMBIs(uStackLimit, uStackBase);
@@ -6594,8 +6594,8 @@ VOID Thread::RestoreGuardPage()
         while (pageMissing)
         {
             LOG((LF_EH, LL_INFO10000,
-                 "Thread::RestoreGuardPage: restoring guard page @ 0x%p, approxStackPointer=0x%p, "
-                 "last normal stack address=0x%p\n",
+                 "Thread::RestoreGuardPage: restoring guard page @ %p, approxStackPointer=%p, "
+                 "last normal stack address=%p\n",
                      guardPageBase, approxStackPointer, guardRegionThreshold));
 
             // Make sure we set the guard page above the guard region.
@@ -6623,7 +6623,7 @@ VOID Thread::RestoreGuardPage()
 
 lFatalError:
     STRESS_LOG2(LF_EH, LL_ALWAYS,
-                "Thread::RestoreGuardPage: too close to the guard region (0x%p) to restore guard page @0x%p\n",
+                "Thread::RestoreGuardPage: too close to the guard region (%p) to restore guard page @%p\n",
                 guardRegionThreshold, guardPageBase);
     _ASSERTE(!"Too close to the guard page to reset it!");
     EEPOLICY_HANDLE_FATAL_ERROR(COR_E_STACKOVERFLOW);

@@ -199,7 +199,7 @@ mono_debugger_log_resume (DebuggerTlsData *tls)
 	g_assert (prev_state == MONO_DEBUGGER_SUSPENDED || prev_state == MONO_DEBUGGER_STARTED);
 	mono_debugger_set_thread_state (tls, prev_state, MONO_DEBUGGER_RESUMED);
 
-	char *msg = g_strdup_printf ("Resuming 0x%p from state %s", (void*)tid, mono_debug_log_thread_state_to_string (prev_state));
+	char *msg = g_strdup_printf ("Resuming %p from state %s", (void*)tid, mono_debug_log_thread_state_to_string (prev_state));
 	MonoDebugLogItem payload;
 	payload.kind = DEBUG_LOG_STATE_CHANGE;
 	payload.tid = tid;
@@ -218,7 +218,7 @@ mono_debugger_log_suspend (DebuggerTlsData *tls)
 	g_assert (prev_state == MONO_DEBUGGER_RESUMED || prev_state == MONO_DEBUGGER_STARTED);
 	mono_debugger_set_thread_state (tls, prev_state, MONO_DEBUGGER_SUSPENDED);
 
-	char *msg = g_strdup_printf ("Suspending 0x%p from state %s", (void*)tid, mono_debug_log_thread_state_to_string (prev_state));
+	char *msg = g_strdup_printf ("Suspending %p from state %s", (void*)tid, mono_debug_log_thread_state_to_string (prev_state));
 	MonoDebugLogItem payload;
 	payload.kind = DEBUG_LOG_STATE_CHANGE;
 	payload.tid = tid;

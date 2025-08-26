@@ -874,12 +874,11 @@ void Compiler::optPrintAssertion(AssertionDsc* curAssertion, AssertionIndex asse
                     ssize_t iconVal = curAssertion->op2.u1.iconVal;
                     if (IsAot())
                     {
-                        printf("Exact Type MT(0x%p)", dspPtr(iconVal));
+                        printf("Exact Type MT(%p)", dspPtr(iconVal));
                     }
                     else
                     {
-                        printf("Exact Type MT(0x%p %s)", dspPtr(iconVal),
-                               eeGetClassName((CORINFO_CLASS_HANDLE)iconVal));
+                        printf("Exact Type MT(%p %s)", dspPtr(iconVal), eeGetClassName((CORINFO_CLASS_HANDLE)iconVal));
                     }
 
                     // We might want to assert:
@@ -894,11 +893,11 @@ void Compiler::optPrintAssertion(AssertionDsc* curAssertion, AssertionIndex asse
                     ssize_t iconVal = curAssertion->op2.u1.iconVal;
                     if (IsAot())
                     {
-                        printf("MT(0x%p)", dspPtr(iconVal));
+                        printf("MT(%p)", dspPtr(iconVal));
                     }
                     else
                     {
-                        printf("MT(0x%p %s)", dspPtr(iconVal), eeGetClassName((CORINFO_CLASS_HANDLE)iconVal));
+                        printf("MT(%p %s)", dspPtr(iconVal), eeGetClassName((CORINFO_CLASS_HANDLE)iconVal));
                     }
                     assert(curAssertion->op2.HasIconFlag());
                 }

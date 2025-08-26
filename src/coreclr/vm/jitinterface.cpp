@@ -10583,7 +10583,7 @@ void CEEInfo::reportFatalError(CorJitResult result)
 
     JIT_TO_EE_TRANSITION_LEAF();
 
-    STRESS_LOG2(LF_JIT,LL_ERROR, "Jit reported error 0x%x while compiling 0x%p\n",
+    STRESS_LOG2(LF_JIT,LL_ERROR, "Jit reported error 0x%x while compiling %p\n",
                 (int)result, (INT_PTR)getMethodBeingCompiled());
 
     EE_TO_JIT_TRANSITION_LEAF();

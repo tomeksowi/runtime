@@ -1378,7 +1378,7 @@ void Compiler::fgInvokeInlineeCompiler(GenTreeCall* call, InlineResult* inlineRe
             pParam->inlineInfo->tokenLookupContextHandle = pParam->inlineCandidateInfo->exactContextHandle;
 
             JITLOG_THIS(pParam->pThis,
-                                     (LL_INFO100000, "INLINER: inlineInfo.tokenLookupContextHandle for %s set to 0x%p:\n",
+                                     (LL_INFO100000, "INLINER: inlineInfo.tokenLookupContextHandle for %s set to %p:\n",
                          pParam->pThis->eeGetMethodFullName(pParam->fncHandle),
                          pParam->pThis->dspPtr(pParam->inlineInfo->tokenLookupContextHandle)));
 

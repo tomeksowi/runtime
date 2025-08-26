@@ -153,7 +153,7 @@ static BOOL STDMETHODCALLTYPE heap_walk_fn(ObjectID object, void* callbackState)
     HRESULT hr = state->instance->pCorProfilerInfo->GetClassFromObject(object, &classId);
     if (FAILED(hr))
     {
-        printf("Error: failed to get class ID from object with ID 0x%p. hr=0x%x\n", (void *)object, hr);
+        printf("Error: failed to get class ID from object with ID %p. hr=0x%x\n", (void *)object, hr);
         state->instance->IncrementFailures();
         return FALSE;
     }
@@ -176,7 +176,7 @@ static BOOL STDMETHODCALLTYPE heap_walk_fn(ObjectID object, void* callbackState)
         hr = state->instance->pCorProfilerInfo->GetClassLayout(classId, NULL, 0, &pcFieldOffset, NULL);
         if (FAILED(hr))
         {
-            printf("Error: failed to get class fields for class ID 0x%p. hr=0x%x\n", (void *)classId, hr);
+            printf("Error: failed to get class fields for class ID %p. hr=0x%x\n", (void *)classId, hr);
             state->instance->IncrementFailures();
             return FALSE;
         }

@@ -293,7 +293,7 @@ void Assembly::Terminate( BOOL signalProfiler )
     STATIC_CONTRACT_NOTHROW;
     STATIC_CONTRACT_GC_TRIGGERS;
 
-    STRESS_LOG1(LF_LOADER, LL_INFO100, "Assembly::Terminate (this = 0x%p)\n", reinterpret_cast<void *>(this));
+    STRESS_LOG1(LF_LOADER, LL_INFO100, "Assembly::Terminate (this = %p)\n", reinterpret_cast<void *>(this));
 
     if (m_isTerminated)
         return;

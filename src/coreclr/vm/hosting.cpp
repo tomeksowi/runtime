@@ -382,7 +382,7 @@ NOINLINE static void FailFastOnApiErrorWithHandle(const CHAR *apiName, HANDLE ha
     sprintf_s(
         messageUtf8,
         ARRAY_SIZE(messageUtf8),
-        "%s failed with error %u. Handle: 0x%p",
+        "%s failed with error %u. Handle: %p",
         apiName,
         errorCode,
         (void*)handle);

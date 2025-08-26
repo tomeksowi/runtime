@@ -10191,7 +10191,7 @@ void ValueNumStore::vnDump(Compiler* comp, ValueNum vn, bool isPtr)
     {
         ssize_t            val         = ConstantValue<ssize_t>(vn);
         const GenTreeFlags handleFlags = GetHandleFlags(vn);
-        printf("Hnd const: 0x%p %s", dspPtr(val), GenTree::gtGetHandleKindString(handleFlags));
+        printf("Hnd const: %p %s", dspPtr(val), GenTree::gtGetHandleKindString(handleFlags));
         if (!comp->IsAot())
         {
             switch (handleFlags & GTF_ICON_HDL_MASK)
@@ -10247,7 +10247,7 @@ void ValueNumStore::vnDump(Compiler* comp, ValueNum vn, bool isPtr)
                 INT64 val = ConstantValue<INT64>(vn);
                 if (isPtr)
                 {
-                    printf("LngPtrCns: 0x%p", dspPtr(val));
+                    printf("LngPtrCns: %p", dspPtr(val));
                 }
                 else
                 {

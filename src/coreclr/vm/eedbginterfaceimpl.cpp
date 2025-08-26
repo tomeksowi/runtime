@@ -1206,7 +1206,7 @@ bool EEDbgInterfaceImpl::TraceFrame(Thread *thread,
     bool fResult = frame->TraceFrame(thread, fromPatch, trace, regs) != FALSE;
 
 #ifdef _DEBUG
-    StubManager::DbgWriteLog("Doing TraceFrame on frame=0x%p (fromPatch=%d), yields:\n", frame, fromPatch);
+    StubManager::DbgWriteLog("Doing TraceFrame on frame=%p (fromPatch=%d), yields:\n", frame, fromPatch);
     if (fResult)
     {
         SUPPRESS_ALLOCATION_ASSERTS_IN_THIS_SCOPE;
@@ -1252,7 +1252,7 @@ bool EEDbgInterfaceImpl::TraceManager(Thread *thread,
     EX_END_CATCH
 
 #ifdef _DEBUG
-    StubManager::DbgWriteLog("Doing TraceManager on %s (0x%p) for IP=0x%p, yields:\n", stubManager->DbgGetName(), stubManager, GetIP(context));
+    StubManager::DbgWriteLog("Doing TraceManager on %s (%p) for IP=%p, yields:\n", stubManager->DbgGetName(), stubManager, GetIP(context));
     if (fResult)
     {
         // Should never be on helper thread

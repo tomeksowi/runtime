@@ -1212,8 +1212,8 @@ void Compiler::eeAllocUnwindInfo(BYTE*          pHotCode,
 #ifdef DEBUG
     if (verbose)
     {
-        printf("allocUnwindInfo(pHotCode=0x%p, pColdCode=0x%p, startOffset=0x%x, endOffset=0x%x, unwindSize=0x%x, "
-               "pUnwindBlock=0x%p, funKind=%d",
+        printf("allocUnwindInfo(pHotCode=%p, pColdCode=%p, startOffset=0x%x, endOffset=0x%x, unwindSize=0x%x, "
+               "pUnwindBlock=%p, funKind=%d",
                dspPtr(pHotCode), dspPtr(pColdCode), startOffset, endOffset, unwindSize, dspPtr(pUnwindBlock), funcKind);
         switch (funcKind)
         {

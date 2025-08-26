@@ -109,13 +109,13 @@ void LoaderHeapEvent::Describe(SString *pSString)
 
     {
         StackSString buf;
-        buf.Printf("    Start of block:       0x%p\n", m_pMem);
+        buf.Printf("    Start of block:       %p\n", m_pMem);
         pSString->Append(buf);
     }
 
     {
         StackSString buf;
-        buf.Printf("    End of block:         0x%p\n", ((BYTE*)m_pMem) + m_dwSize - 1);
+        buf.Printf("    End of block:         %p\n", ((BYTE*)m_pMem) + m_dwSize - 1);
         pSString->Append(buf);
     }
 

@@ -2831,7 +2831,7 @@ StackFrame ExInfo::FindParentStackFrameHelper(CrawlFrame* pCF,
 
 lExit: ;
 
-    STRESS_LOG3(LF_EH|LF_GCROOTS, LL_INFO100, "Returning 0x%p as the parent stack frame for %s 0x%p\n",
+    STRESS_LOG3(LF_EH|LF_GCROOTS, LL_INFO100, "Returning %p as the parent stack frame for %s %p\n",
                 sfResult.SP, fIsFilterFunclet ? "filter funclet" : "funclet", csfCurrent.SP);
 
     return sfResult;

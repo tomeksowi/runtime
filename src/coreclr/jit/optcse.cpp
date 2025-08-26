@@ -4972,7 +4972,7 @@ void CSE_HeuristicCommon::PerformCSE(CSE_Candidate* successfulCandidate)
         {
             if (isSharedConst)
             {
-                printf("\nWe have shared Const CSE's and selected " FMT_VN " with a value of 0x%p as the base.\n",
+                printf("\nWe have shared Const CSE's and selected " FMT_VN " with a value of %p as the base.\n",
                        dsc->csdConstDefVN, dspPtr(dsc->csdConstDefValue));
             }
             else // !isSharedConst

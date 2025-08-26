@@ -1098,7 +1098,7 @@ UINT_PTR EEToProfInterfaceImpl::EEFunctionIDMapper(FunctionID funcId, BOOL * pbH
     {
         CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                     LL_INFO100,
-                                    "**PROF: Calling profiler's FunctionIDMapper2. funcId: 0x%p. clientData: 0x%p.\n",
+                                    "**PROF: Calling profiler's FunctionIDMapper2. funcId: %p. clientData: %p.\n",
                                     funcId,
                                     m_pProfilersFuncIDMapper2ClientData));
 
@@ -1110,7 +1110,7 @@ UINT_PTR EEToProfInterfaceImpl::EEFunctionIDMapper(FunctionID funcId, BOOL * pbH
     {
         CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                     LL_INFO100,
-                                    "**PROF: Calling profiler's FunctionIDMapper. funcId: 0x%p.\n",
+                                    "**PROF: Calling profiler's FunctionIDMapper. funcId: %p.\n",
                                     funcId));
 
         // The attached profiler may not want to hook this function, so ask it
@@ -1710,7 +1710,7 @@ HRESULT EEToProfInterfaceImpl::RootReference2(BYTE * objectId,
     _ASSERTE(*((size_t *)pHeapId) != (size_t)(-1));
 
     LOG((LF_CORPROF, LL_INFO100000, "**PROF: Root Reference. "
-            "ObjectID:0x%p dwEtwRootKind:0x%x dwEtwRootFlags:0x%x rootId:0x%p HeadId:0x%p\n",
+            "ObjectID:%p dwEtwRootKind:0x%x dwEtwRootFlags:0x%x rootId:%p HeadId:%p\n",
             objectId, dwEtwRootKind, dwEtwRootFlags, rootID, pHeapId));
 
     DWORD dwProfApiRootFlags = EtwRootFlagsToProfApiRootFlags(dwEtwRootFlags);
@@ -1833,7 +1833,7 @@ HRESULT EEToProfInterfaceImpl::ConditionalWeakTableElementReference(BYTE * prima
     _ASSERTE(CORProfilerTrackConditionalWeakTableElements());
 
     LOG((LF_CORPROF, LL_INFO100000, "**PROF: Root Dependent Handle. "
-            "PrimaryObjectID:0x%p SecondaryObjectID:0x%p rootId:0x%p HeadId:0x%p\n",
+            "PrimaryObjectID:%p SecondaryObjectID:%p rootId:%p HeadId:%p\n",
             primaryObjectId, secondaryObjectId, rootID, pHeapId));
 
     // Get a pointer to the data for this heap
@@ -2897,7 +2897,7 @@ HRESULT EEToProfInterfaceImpl::ThreadCreated(ThreadID threadId)
     CLR_TO_PROFILER_ENTRYPOINT_FOR_THREAD(threadId,
                                           (LF_CORPROF,
                                            LL_INFO100,
-                                           "**PROF: Notifying profiler of created thread. ThreadId: 0x%p.\n",
+                                           "**PROF: Notifying profiler of created thread. ThreadId: %p.\n",
                                            threadId));
 
     // Notify the profiler of the newly created thread.
@@ -2961,7 +2961,7 @@ HRESULT EEToProfInterfaceImpl::ThreadDestroyed(ThreadID threadId)
     CLR_TO_PROFILER_ENTRYPOINT_FOR_THREAD(threadId,
                                           (LF_CORPROF,
                                            LL_INFO100,
-                                           "**PROF: Notifying profiler of destroyed thread. ThreadId: 0x%p.\n",
+                                           "**PROF: Notifying profiler of destroyed thread. ThreadId: %p.\n",
                                            threadId));
 
     // From now on, issue no more callbacks for this thread
@@ -3005,7 +3005,7 @@ HRESULT EEToProfInterfaceImpl::ThreadAssignedToOSThread(ThreadID managedThreadId
         managedThreadId,
         (LF_CORPROF,
         LL_INFO100,
-        "**PROF: Notifying profiler of thread assignment.  ThreadId: 0x%p, OSThreadId: 0x%08x\n",
+        "**PROF: Notifying profiler of thread assignment.  ThreadId: %p, OSThreadId: 0x%08x\n",
         managedThreadId,
         osThreadId));
 
@@ -3125,7 +3125,7 @@ HRESULT EEToProfInterfaceImpl::JITCompilationFinished(FunctionID functionId,
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: JITCompilationFinished 0x%p, hr=0x%08x.\n",
+                                "**PROF: JITCompilationFinished %p, hr=0x%08x.\n",
                                 functionId,
                                 hrStatus));
 
@@ -3164,7 +3164,7 @@ HRESULT EEToProfInterfaceImpl::JITCompilationStarted(FunctionID functionId,
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: JITCompilationStarted 0x%p.\n",
+                                "**PROF: JITCompilationStarted %p.\n",
                                 functionId));
 
     // Currently JITCompilationStarted is always called with fIsSafeToBlock==TRUE.  If this ever changes,
@@ -3195,7 +3195,7 @@ HRESULT EEToProfInterfaceImpl::DynamicMethodUnloaded(FunctionID functionId)
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
         LL_INFO1000,
-        "**PROF: DynamicMethodUnloaded 0x%p.\n",
+        "**PROF: DynamicMethodUnloaded %p.\n",
         functionId));
 
     _ASSERTE(functionId);
@@ -3231,7 +3231,7 @@ HRESULT EEToProfInterfaceImpl::DynamicMethodJITCompilationFinished(FunctionID fu
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: DynamicMethodJITCompilationFinished 0x%p.\n",
+                                "**PROF: DynamicMethodJITCompilationFinished %p.\n",
                                 functionId));
 
     _ASSERTE(functionId);
@@ -3268,7 +3268,7 @@ HRESULT EEToProfInterfaceImpl::DynamicMethodJITCompilationStarted(FunctionID fun
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: DynamicMethodJITCompilationStarted 0x%p.\n",
+                                "**PROF: DynamicMethodJITCompilationStarted %p.\n",
                                 functionId));
 
     _ASSERTE(functionId);
@@ -3316,7 +3316,7 @@ HRESULT EEToProfInterfaceImpl::JITCachedFunctionSearchStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: JITCachedFunctionSearchStarted 0x%p.\n",
+                                "**PROF: JITCachedFunctionSearchStarted %p.\n",
                                 functionId));
     _ASSERTE(functionId);
     _ASSERTE(pbUseCachedFunction != NULL);
@@ -3354,7 +3354,7 @@ HRESULT EEToProfInterfaceImpl::JITCachedFunctionSearchFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: JITCachedFunctionSearchFinished 0x%p, %s.\n",
+                                "**PROF: JITCachedFunctionSearchFinished %p, %s.\n",
                                 functionId,
                                 (result == COR_PRF_CACHED_FUNCTION_FOUND ?
                                     "Cached function found" :
@@ -3403,7 +3403,7 @@ HRESULT EEToProfInterfaceImpl::JITInlining(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: JITInlining caller: 0x%p, callee: 0x%p.\n",
+                                "**PROF: JITInlining caller: %p, callee: %p.\n",
                                 callerId,
                                 calleeId));
 
@@ -3444,7 +3444,7 @@ HRESULT EEToProfInterfaceImpl::ReJITCompilationStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ReJITCompilationStarted 0x%p 0x%p.\n",
+                                "**PROF: ReJITCompilationStarted %p %p.\n",
                                 functionId, reJitId));
 
     // Should only be called on profilers that support ICorProfilerCallback4
@@ -3493,7 +3493,7 @@ HRESULT EEToProfInterfaceImpl::GetReJITParameters(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: GetReJITParameters 0x%p 0x%p.\n",
+                                "**PROF: GetReJITParameters %p %p.\n",
                                 moduleId, methodId));
 
     // Should only be called on profilers that support ICorProfilerCallback4
@@ -3536,7 +3536,7 @@ HRESULT EEToProfInterfaceImpl::ReJITCompilationFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ReJITCompilationFinished 0x%p 0x%p hr=0x%x.\n",
+                                "**PROF: ReJITCompilationFinished %p %p hr=0x%x.\n",
                                 functionId, reJitId, hrStatus));
 
     // Should only be called on profilers that support ICorProfilerCallback4
@@ -3579,7 +3579,7 @@ HRESULT EEToProfInterfaceImpl::ReJITError(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ReJITError 0x%p 0x%x 0x%p 0x%x.\n",
+                                "**PROF: ReJITError %p 0x%x %p 0x%x.\n",
                                 moduleId, methodId, functionId, hrStatus));
 
     // Should only be called on profilers that support ICorProfilerCallback4
@@ -3620,7 +3620,7 @@ HRESULT EEToProfInterfaceImpl::ModuleLoadStarted(ModuleID moduleId)
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: ModuleLoadStarted 0x%p.\n",
+                                "**PROF: ModuleLoadStarted %p.\n",
                                 moduleId));
 
     _ASSERTE(moduleId != 0);
@@ -3658,7 +3658,7 @@ HRESULT EEToProfInterfaceImpl::ModuleLoadFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: ModuleLoadFinished 0x%p.\n",
+                                "**PROF: ModuleLoadFinished %p.\n",
                                 moduleId));
 
     _ASSERTE(moduleId != 0);
@@ -3695,7 +3695,7 @@ HRESULT EEToProfInterfaceImpl::ModuleUnloadStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: ModuleUnloadStarted 0x%p.\n",
+                                "**PROF: ModuleUnloadStarted %p.\n",
                                 moduleId));
 
     _ASSERTE(moduleId != 0);
@@ -3732,7 +3732,7 @@ HRESULT EEToProfInterfaceImpl::ModuleUnloadFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: ModuleUnloadFinished 0x%p.\n",
+                                "**PROF: ModuleUnloadFinished %p.\n",
                                 moduleId));
     _ASSERTE(moduleId != 0);
     {
@@ -3767,7 +3767,7 @@ HRESULT EEToProfInterfaceImpl::ModuleAttachedToAssembly(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: ModuleAttachedToAssembly 0x%p, 0x%p.\n",
+                                "**PROF: ModuleAttachedToAssembly %p, %p.\n",
                                 moduleId,
                                 AssemblyId));
 
@@ -3802,7 +3802,7 @@ HRESULT EEToProfInterfaceImpl::ModuleInMemorySymbolsUpdated(ModuleID moduleId)
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
         LL_INFO10,
-        "**PROF: ModuleInMemorySymbolsUpdated.  moduleId: 0x%p.\n",
+        "**PROF: ModuleInMemorySymbolsUpdated.  moduleId: %p.\n",
         moduleId
         ));
     HRESULT hr = S_OK;
@@ -3847,7 +3847,7 @@ HRESULT EEToProfInterfaceImpl::ClassLoadStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO100,
-                                "**PROF: ClassLoadStarted 0x%p.\n",
+                                "**PROF: ClassLoadStarted %p.\n",
                                 classId));
 
     _ASSERTE(classId);
@@ -3886,7 +3886,7 @@ HRESULT EEToProfInterfaceImpl::ClassLoadFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO100,
-                                "**PROF: ClassLoadFinished 0x%p, 0x%08x.\n",
+                                "**PROF: ClassLoadFinished %p, 0x%08x.\n",
                                 classId,
                                 hrStatus));
 
@@ -3928,7 +3928,7 @@ HRESULT EEToProfInterfaceImpl::ClassUnloadStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO100,
-                                "**PROF: ClassUnloadStarted 0x%p.\n",
+                                "**PROF: ClassUnloadStarted %p.\n",
                                 classId));
 
     _ASSERTE(classId);
@@ -3967,7 +3967,7 @@ HRESULT EEToProfInterfaceImpl::ClassUnloadFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO100,
-                                "**PROF: ClassUnloadFinished 0x%p, 0x%08x.\n",
+                                "**PROF: ClassUnloadFinished %p, 0x%08x.\n",
                                 classId,
                                 hrStatus));
 
@@ -4007,7 +4007,7 @@ HRESULT EEToProfInterfaceImpl::AppDomainCreationStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AppDomainCreationStarted 0x%p.\n",
+                                "**PROF: AppDomainCreationStarted %p.\n",
                                 appDomainId));
 
     _ASSERTE(appDomainId != 0);
@@ -4044,7 +4044,7 @@ HRESULT EEToProfInterfaceImpl::AppDomainCreationFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AppDomainCreationFinished 0x%p, 0x%08x.\n",
+                                "**PROF: AppDomainCreationFinished %p, 0x%08x.\n",
                                 appDomainId,
                                 hrStatus));
 
@@ -4080,7 +4080,7 @@ HRESULT EEToProfInterfaceImpl::AppDomainShutdownStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AppDomainShutdownStarted 0x%p.\n",
+                                "**PROF: AppDomainShutdownStarted %p.\n",
                                 appDomainId));
 
     _ASSERTE(appDomainId != 0);
@@ -4116,7 +4116,7 @@ HRESULT EEToProfInterfaceImpl::AppDomainShutdownFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AppDomainShutdownFinished 0x%p, 0x%08x.\n",
+                                "**PROF: AppDomainShutdownFinished %p, 0x%08x.\n",
                                 appDomainId,
                                 hrStatus));
 
@@ -4158,7 +4158,7 @@ HRESULT EEToProfInterfaceImpl::AssemblyLoadStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AssemblyLoadStarted 0x%p.\n",
+                                "**PROF: AssemblyLoadStarted %p.\n",
                                 assemblyId));
 
     _ASSERTE(assemblyId != 0);
@@ -4196,7 +4196,7 @@ HRESULT EEToProfInterfaceImpl::AssemblyLoadFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AssemblyLoadFinished 0x%p, 0x%08x.\n",
+                                "**PROF: AssemblyLoadFinished %p, 0x%08x.\n",
                                 assemblyId,
                                 hrStatus));
 
@@ -4232,7 +4232,7 @@ HRESULT EEToProfInterfaceImpl::AssemblyUnloadStarted(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AssemblyUnloadStarted 0x%p.\n",
+                                "**PROF: AssemblyUnloadStarted %p.\n",
                                 assemblyId));
 
     _ASSERTE(assemblyId != 0);
@@ -4268,7 +4268,7 @@ HRESULT EEToProfInterfaceImpl::AssemblyUnloadFinished(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AssemblyUnloadFinished 0x%p, 0x%08x.\n",
+                                "**PROF: AssemblyUnloadFinished %p, 0x%08x.\n",
                                 assemblyId,
                                 hrStatus));
 
@@ -4309,7 +4309,7 @@ HRESULT EEToProfInterfaceImpl::UnmanagedToManagedTransition(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10000,
-                                "**PROF: UnmanagedToManagedTransition 0x%p.\n",
+                                "**PROF: UnmanagedToManagedTransition %p.\n",
                                 functionId));
 
     _ASSERTE(reason == COR_PRF_TRANSITION_CALL || reason == COR_PRF_TRANSITION_RETURN);
@@ -4346,7 +4346,7 @@ HRESULT EEToProfInterfaceImpl::ManagedToUnmanagedTransition(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10000,
-                                "**PROF: ManagedToUnmanagedTransition 0x%p.\n",
+                                "**PROF: ManagedToUnmanagedTransition %p.\n",
                                 functionId));
 
     {
@@ -4383,7 +4383,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionThrown(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ExceptionThrown. ObjectID: 0x%p. ThreadID: 0x%p\n",
+                                "**PROF: ExceptionThrown. ObjectID: %p. ThreadID: %p\n",
                                 thrownObjectId,
                                 GetThreadNULLOk()));
 
@@ -4417,7 +4417,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionSearchFunctionEnter(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ExceptionSearchFunctionEnter. ThreadID: 0x%p, functionId: 0x%p\n",
+                                "**PROF: ExceptionSearchFunctionEnter. ThreadID: %p, functionId: %p\n",
                                 GetThreadNULLOk(),
                                 functionId));
 
@@ -4450,7 +4450,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionSearchFunctionLeave()
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ExceptionSearchFunctionLeave. ThreadID: 0x%p\n",
+                                "**PROF: ExceptionSearchFunctionLeave. ThreadID: %p\n",
                                 GetThreadNULLOk()));
 
     {
@@ -4482,7 +4482,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionSearchFilterEnter(FunctionID functionId)
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ExceptionSearchFilterEnter. ThreadID: 0x%p, functionId: 0x%p\n",
+                                "**PROF: ExceptionSearchFilterEnter. ThreadID: %p, functionId: %p\n",
                                 GetThreadNULLOk(),
                                 functionId));
 
@@ -4515,7 +4515,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionSearchFilterLeave()
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ExceptionFilterLeave. ThreadID: 0x%p\n",
+                                "**PROF: ExceptionFilterLeave. ThreadID: %p\n",
                                 GetThreadNULLOk()));
 
     {
@@ -4547,7 +4547,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionSearchCatcherFound(FunctionID functionId
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ExceptionSearchCatcherFound.  ThreadID: 0x%p\n",
+                                "**PROF: ExceptionSearchCatcherFound.  ThreadID: %p\n",
                                 GetThreadNULLOk()));
 
     {
@@ -4594,7 +4594,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionUnwindFunctionEnter(FunctionID functionI
         kEE2PNoTrigger,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: ExceptionUnwindFunctionEnter. ThreadID: 0x%p, functionId: 0x%p\n",
+        "**PROF: ExceptionUnwindFunctionEnter. ThreadID: %p, functionId: %p\n",
         GetThreadNULLOk(),
         functionId));
 
@@ -4630,7 +4630,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionUnwindFunctionLeave()
         kEE2PNoTrigger,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: ExceptionUnwindFunctionLeave. ThreadID: 0x%p\n",
+        "**PROF: ExceptionUnwindFunctionLeave. ThreadID: %p\n",
         GetThreadNULLOk()));
 
     {
@@ -4665,7 +4665,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionUnwindFinallyEnter(FunctionID functionId
         kEE2PNoTrigger,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: ExceptionUnwindFinallyEnter. ThreadID: 0x%p, functionId: 0x%p\n",
+        "**PROF: ExceptionUnwindFinallyEnter. ThreadID: %p, functionId: %p\n",
         GetThreadNULLOk(),
         functionId));
 
@@ -4701,7 +4701,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionUnwindFinallyLeave()
         kEE2PNoTrigger,
         (LF_CORPROF,
         LL_INFO1000,
-        "**PROF: ExceptionUnwindFinallyLeave. ThreadID: 0x%p\n",
+        "**PROF: ExceptionUnwindFinallyLeave. ThreadID: %p\n",
         GetThreadNULLOk()));
 
     {
@@ -4735,7 +4735,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionCatcherEnter(FunctionID functionId, Obje
     CLR_TO_PROFILER_ENTRYPOINT_EX(
         kEE2PNoTrigger,
         (LF_CORPROF,
-        LL_INFO1000, "**PROF: ExceptionCatcherEnter.        ThreadID: 0x%p, functionId: 0x%p\n",
+        LL_INFO1000, "**PROF: ExceptionCatcherEnter.        ThreadID: %p, functionId: %p\n",
         GetThreadNULLOk(),
         functionId));
 
@@ -4769,7 +4769,7 @@ HRESULT EEToProfInterfaceImpl::ExceptionCatcherLeave()
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ExceptionCatcherLeave.        ThreadID: 0x%p\n",
+                                "**PROF: ExceptionCatcherLeave.        ThreadID: %p\n",
                                 GetThreadNULLOk()));
 
 
@@ -4900,7 +4900,7 @@ HRESULT EEToProfInterfaceImpl::RuntimeSuspendStarted(
         kEE2PNoTrigger,
         (LF_CORPROF,
         LL_INFO100,
-        "**PROF: RuntimeSuspendStarted. ThreadID 0x%p.\n",
+        "**PROF: RuntimeSuspendStarted. ThreadID %p.\n",
         GetThreadNULLOk()));
 
     {
@@ -4938,7 +4938,7 @@ HRESULT EEToProfInterfaceImpl::RuntimeSuspendFinished()
         kEE2PNoTrigger,
         (LF_CORPROF,
         LL_INFO100,
-        "**PROF: RuntimeSuspendFinished. ThreadID 0x%p.\n",
+        "**PROF: RuntimeSuspendFinished. ThreadID %p.\n",
         GetThreadNULLOk()));
 
 
@@ -4982,7 +4982,7 @@ HRESULT EEToProfInterfaceImpl::RuntimeSuspendAborted()
         kEE2PNoTrigger,
         (LF_CORPROF,
         LL_INFO100,
-        "**PROF: RuntimeSuspendAborted. ThreadID 0x%p.\n",
+        "**PROF: RuntimeSuspendAborted. ThreadID %p.\n",
         GetThreadNULLOk()));
 
     {
@@ -5018,7 +5018,7 @@ HRESULT EEToProfInterfaceImpl::RuntimeResumeStarted()
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO100,
-                                "**PROF: RuntimeResumeStarted. ThreadID 0x%p.\n",
+                                "**PROF: RuntimeResumeStarted. ThreadID %p.\n",
                                 GetThreadNULLOk()));
 
     {
@@ -5052,7 +5052,7 @@ HRESULT EEToProfInterfaceImpl::RuntimeResumeFinished()
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO100,
-                                "**PROF: RuntimeResumeFinished. ThreadID 0x%p.\n",
+                                "**PROF: RuntimeResumeFinished. ThreadID %p.\n",
                                 GetThreadNULLOk()));
 
     {
@@ -5096,7 +5096,7 @@ HRESULT EEToProfInterfaceImpl::RuntimeThreadSuspended(ThreadID suspendedThreadId
 
     CHECK_PROFILER_STATUS(kEE2PNone);
 
-    LOG((LF_CORPROF, LL_INFO1000, "**PROF: RuntimeThreadSuspended. ThreadID 0x%p.\n",
+    LOG((LF_CORPROF, LL_INFO1000, "**PROF: RuntimeThreadSuspended. ThreadID %p.\n",
          suspendedThreadId));
 
     // NOTE: We're notrigger, so we cannot switch to preemptive mode.
@@ -5192,7 +5192,7 @@ HRESULT EEToProfInterfaceImpl::RuntimeThreadResumed(ThreadID resumedThreadId)
 
     CHECK_PROFILER_STATUS(kEE2PNone);
 
-    LOG((LF_CORPROF, LL_INFO1000, "**PROF: RuntimeThreadResumed. ThreadID 0x%p.\n", resumedThreadId));
+    LOG((LF_CORPROF, LL_INFO1000, "**PROF: RuntimeThreadResumed. ThreadID %p.\n", resumedThreadId));
 
     // NOTE: We're notrigger, so we cannot switch to preemptive mode.
 
@@ -5245,7 +5245,7 @@ HRESULT EEToProfInterfaceImpl::ObjectAllocated(
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO1000,
-                                "**PROF: ObjectAllocated. ObjectID: 0x%p.  ClassID: 0x%p\n",
+                                "**PROF: ObjectAllocated. ObjectID: %p.  ClassID: %p\n",
                                 objectId,
                                 classId));
 
@@ -5857,7 +5857,7 @@ HRESULT EEToProfInterfaceImpl::GetAssemblyReferences(LPCWSTR wszAssemblyPath, IA
 
     CLR_TO_PROFILER_ENTRYPOINT((LF_CORPROF,
                                 LL_INFO10,
-                                "**PROF: AssemblyReferenceClosureWalkStarted.  wszAssemblyPath: 0x%p.\n",
+                                "**PROF: AssemblyReferenceClosureWalkStarted.  wszAssemblyPath: %p.\n",
                                 wszAssemblyPath
                                 ));
     HRESULT hr = S_OK;

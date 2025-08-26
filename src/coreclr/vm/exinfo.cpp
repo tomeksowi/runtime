@@ -54,7 +54,7 @@ void ExInfo::CopyAndClearSource(ExInfo *from)
     CONTRACTL_END;
 
 #ifdef TARGET_X86
-    LOG((LF_EH, LL_INFO100, "In ExInfo::CopyAndClearSource: m_dEsp=%08x, %08x <- [%08x], stackAddress = 0x%p <- 0x%p\n",
+    LOG((LF_EH, LL_INFO100, "In ExInfo::CopyAndClearSource: m_dEsp=%08x, %08x <- [%08x], stackAddress = %p <- %p\n",
          from->m_dEsp, &(this->m_dEsp), &from->m_dEsp, this->m_StackAddress, from->m_StackAddress));
 #endif // TARGET_X86
 
@@ -101,7 +101,7 @@ void ExInfo::Init()
     m_DebuggerExState.Init();
 
     m_pSearchBoundary = NULL;
-	STRESS_LOG3(LF_EH, LL_INFO10000, "ExInfo::Init: setting ExInfo:0x%p m_pBottomMostHandler from 0x%p to 0x%p\n",
+	STRESS_LOG3(LF_EH, LL_INFO10000, "ExInfo::Init: setting ExInfo:%p m_pBottomMostHandler from %p to %p\n",
 		this, m_pBottomMostHandler, NULL);
     m_pBottomMostHandler = NULL;
     m_pPrevNestedInfo = NULL;
@@ -182,7 +182,7 @@ void ExInfo::UnwindExInfo(VOID* limit)
              ((g_pDebugInterface != NULL) && (g_pDebugInterface->GetRCThreadId() == GetCurrentThreadId())));
 #endif // DEBUGGING_SUPPORTED
 
-    LOG((LF_EH, LL_INFO100, "UnwindExInfo: unwind limit is 0x%p, prevNested is 0x%p\n", limit, m_pPrevNestedInfo));
+    LOG((LF_EH, LL_INFO100, "UnwindExInfo: unwind limit is %p, prevNested is %p\n", limit, m_pPrevNestedInfo));
 
     ExInfo *pPrevNestedInfo = m_pPrevNestedInfo;
 
@@ -197,7 +197,7 @@ void ExInfo::UnwindExInfo(VOID* limit)
     //
     while (pPrevNestedInfo && pPrevNestedInfo->m_StackAddress < limit)
     {
-        STRESS_LOG1(LF_EH, LL_INFO100, "UnwindExInfo: PopExInfo(): popping nested ExInfo at 0x%p\n", pPrevNestedInfo->m_StackAddress);
+        STRESS_LOG1(LF_EH, LL_INFO100, "UnwindExInfo: PopExInfo(): popping nested ExInfo at %p\n", pPrevNestedInfo->m_StackAddress);
 
         if (pPrevNestedInfo->m_hThrowable != NULL)
         {
@@ -231,7 +231,7 @@ void ExInfo::UnwindExInfo(VOID* limit)
     if (pPrevNestedInfo)
     {
         // found nested handler info that is above the esp restore point so successfully caught nested
-        STRESS_LOG2(LF_EH, LL_INFO100, "UnwindExInfo: resetting nested ExInfo to 0x%p stackaddress:0x%p\n", pPrevNestedInfo, pPrevNestedInfo->m_StackAddress);
+        STRESS_LOG2(LF_EH, LL_INFO100, "UnwindExInfo: resetting nested ExInfo to %p stackaddress:%p\n", pPrevNestedInfo, pPrevNestedInfo->m_StackAddress);
 
         // Remember if this ExInfo is heap allocated or not.
         BOOL isHeapAllocated = pPrevNestedInfo->IsHeapAllocated();

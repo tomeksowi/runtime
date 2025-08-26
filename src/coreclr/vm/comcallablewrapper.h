@@ -1796,10 +1796,10 @@ inline BOOL ComCallWrapper::IsWrapperActive()
     BOOL bIsWrapperActive = (bHasStrongCOMRefCount && !m_pSimpleWrapper->IsHandleWeak());
 
     LOG((LF_INTEROP, LL_INFO1000,
-         "CCW 0x%p: cbRef = 0x%x, IsHandleWeak = %d\n",
+         "CCW %p: cbRef = 0x%x, IsHandleWeak = %d\n",
          this,
          cbRef, m_pSimpleWrapper->IsHandleWeak()));
-    LOG((LF_INTEROP, LL_INFO1000, "CCW 0x%p: IsWrapperActive returned %d\n", this, bIsWrapperActive));
+    LOG((LF_INTEROP, LL_INFO1000, "CCW %p: IsWrapperActive returned %d\n", this, bIsWrapperActive));
 
     return bIsWrapperActive;
 }

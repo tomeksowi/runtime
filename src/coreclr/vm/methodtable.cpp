@@ -675,7 +675,7 @@ MethodTable* CreateMinimalMethodTable(Module* pContainingModule,
 
     EEClass* pClass = EEClass::CreateMinimalClass(pLoaderAllocator->GetHighFrequencyHeap(), pamTracker);
 
-    LOG((LF_BCL, LL_INFO100, "Level2 - Creating MethodTable {0x%p}...\n", pClass));
+    LOG((LF_BCL, LL_INFO100, "Level2 - Creating MethodTable {%p}...\n", pClass));
 
     MethodTable* pMT = (MethodTable *)(void *)pamTracker->Track(pLoaderAllocator->GetHighFrequencyHeap()->AllocMem(S_SIZE_T(sizeof(MethodTable))));
 
@@ -709,7 +709,7 @@ MethodTable* CreateMinimalMethodTable(Module* pContainingModule,
     pMT->GetAuxiliaryDataForWrite()->SetIsPublished();
 #endif
 
-    LOG((LF_BCL, LL_INFO10, "Level1 - MethodTable created {0x%p}\n", pClass));
+    LOG((LF_BCL, LL_INFO10, "Level1 - MethodTable created {%p}\n", pClass));
 
     return pMT;
 }
@@ -1598,7 +1598,7 @@ MethodTable::DebugDumpVtable(LPCUTF8 szClassName, BOOL fDebug)
                 DefineFullyQualifiedNameForClass();
                 LPCUTF8 name = GetFullyQualifiedNameForClass(pMD->GetMethodTable());
                 sprintf_s(buff, cchBuff,
-                           "  slot %2d: %s::%s%s  0x%p (slot = %2d)\n",
+                           "  slot %2d: %s::%s%s  %p (slot = %2d)\n",
                            it.GetSlotNumber(),
                            name,
                            pszName,
@@ -1612,7 +1612,7 @@ MethodTable::DebugDumpVtable(LPCUTF8 szClassName, BOOL fDebug)
             {
                 //LF_ALWAYS allowed here because this is controlled by special env var code:EEConfig::ShouldDumpOnClassLoad
                 LOG((LF_ALWAYS, LL_ALWAYS,
-                     "  slot %2d: %s::%s%s  0x%p (slot = %2d)\n",
+                     "  slot %2d: %s::%s%s  %p (slot = %2d)\n",
                      it.GetSlotNumber(),
                      pMD->GetClass()->GetDebugClassName(),
                      pszName,
@@ -1684,7 +1684,7 @@ MethodTable::Debug_DumpInterfaceMap(
 
             //LF_ALWAYS allowed here because this is controlled by special env var code:EEConfig::ShouldDumpOnClassLoad
             LOG((LF_ALWAYS, LL_ALWAYS,
-                "  index %2d: %s  0x%p\n",
+                "  index %2d: %s  %p\n",
                 it.GetIndex(),
                 pInterfaceMT->GetDebugClassName(),
                 pInterfaceMT));

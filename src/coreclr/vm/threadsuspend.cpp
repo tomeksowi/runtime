@@ -2929,7 +2929,7 @@ BOOL Thread::RedirectThreadAtHandledJITCase(PFN_REDIRECTTARGET pTgt)
     SetIP(pCtx, (PCODE)pTgt);
 
 
-    STRESS_LOG4(LF_SYNC, LL_INFO10000, "Redirecting thread %p(tid=%x) from address 0x%p to address 0x%p\n",
+    STRESS_LOG4(LF_SYNC, LL_INFO10000, "Redirecting thread %p(tid=%x) from address %p to address %p\n",
         this, this->GetThreadId(), dwOrigEip, pTgt);
 
     bRes = EESetThreadContext(this, pCtx);
@@ -4591,7 +4591,7 @@ void Thread::HijackThread(ExecutionState *esb X86_ARG(ReturnKind returnKind) X86
     // may be uncommented once isLegalManagedCodeCaller works properly
     // with non-return address inputs, and with non-DEBUG builds
     //_ASSERTE(isLegalManagedCodeCaller((TADDR)m_pvHJRetAddr));
-    STRESS_LOG2(LF_SYNC, LL_INFO100, "Hijacking return address 0x%p for thread %p\n", m_pvHJRetAddr, this);
+    STRESS_LOG2(LF_SYNC, LL_INFO100, "Hijacking return address %p for thread %p\n", m_pvHJRetAddr, this);
 
     // Remember the method we're executing
     m_HijackedFunction = esb->m_pFD;
@@ -4623,7 +4623,7 @@ void Thread::UnhijackThread()
         // it.
 //       _ASSERTE(*m_ppvHJRetAddrPtr == OnHijackTripThread);
 
-        STRESS_LOG2(LF_SYNC, LL_INFO100, "Unhijacking return address 0x%p for thread %p\n", m_pvHJRetAddr, this);
+        STRESS_LOG2(LF_SYNC, LL_INFO100, "Unhijacking return address %p for thread %p\n", m_pvHJRetAddr, this);
         // restore the return address and clear the flag
         *m_ppvHJRetAddrPtr = m_pvHJRetAddr;
         ResetThreadState(TS_Hijacked);

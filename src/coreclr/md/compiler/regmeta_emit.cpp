@@ -829,7 +829,7 @@ HRESULT RegMeta::RefToDefOptimization()
             if (hr != S_OK)
             {
                 // Log the failure.
-                LOG((LF_METADATA, LL_INFO10, "Member %s (0x%p, %u) not found on 0x%x\n", szName, pvSig, cbSig, tkParent));
+                LOG((LF_METADATA, LL_INFO10, "Member %s (%p, %u) not found on 0x%x\n", szName, pvSig, cbSig, tkParent));
                 continue;
             }
 

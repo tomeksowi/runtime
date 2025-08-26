@@ -2294,7 +2294,7 @@ VOID DECLSPEC_NORETURN RaiseTheExceptionInternalOnly(OBJECTREF throwable, BOOL r
         STRINGREF message = ((EXCEPTIONREF)throwable)->GetMessage();
         OBJECTREF innerEH = ((EXCEPTIONREF)throwable)->GetInnerException();
 
-        STRESS_LOG4(LF_EH, LL_INFO100, "Exception HRESULT = 0x%x Message String 0x%p (db will display) InnerException %p MT %pT\n",
+        STRESS_LOG4(LF_EH, LL_INFO100, "Exception HRESULT = 0x%x Message String %p (db will display) InnerException %p MT %pT\n",
             hr, OBJECTREFToObject(message), OBJECTREFToObject(innerEH), (innerEH!=0)?innerEH->GetMethodTable():0);
     }
 #endif

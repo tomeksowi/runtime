@@ -1053,7 +1053,7 @@ conservative_pass (TlsData *tls, guint8 *stack_start, guint8 *stack_end)
 					continue;
 
 				if (pin_bitmap [bindex / 8] & (1 << (bindex % 8))) {
-					DEBUG (fprintf (logfile, "\treg %s saved at 0x%p is pinning.\n", mono_arch_regname (i), reg_locations [i]));
+					DEBUG (fprintf (logfile, "\treg %s saved at %p is pinning.\n", mono_arch_regname (i), reg_locations [i]));
 					precise_regmask &= ~(1 << i);
 				}
 				bindex ++;
@@ -1089,7 +1089,7 @@ conservative_pass (TlsData *tls, guint8 *stack_start, guint8 *stack_end)
 
 				if (reg_locations [i] && (ref_bitmap [bindex / 8] & (1 << (bindex % 8)))) {
 					DEBUG_PRECISE (fi->regs [fi->nreg_locations] = i);
-					DEBUG (fprintf (logfile, "\treg %s saved at 0x%p is ref.\n", mono_arch_regname (i), reg_locations [i]));
+					DEBUG (fprintf (logfile, "\treg %s saved at %p is ref.\n", mono_arch_regname (i), reg_locations [i]));
 					fi->reg_locations [fi->nreg_locations] = (guint8*)reg_locations [i] - stack_start;
 					fi->nreg_locations ++;
 				}

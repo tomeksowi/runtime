@@ -3375,7 +3375,7 @@ void Module::FixupVTables()
                     mdToken mdTok = rgMethodsToLoad[iCurMethod].token;
                     MethodDesc *pMD = rgMethodsToLoad[iCurMethod].pMD;
                     iCurMethod++;
-                    LOG((LF_INTEROP, LL_INFO10, "[0x%p] <-- VTable  thunk for \"%s\" (pMD = 0x%p)\n",
+                    LOG((LF_INTEROP, LL_INFO10, "[%p] <-- VTable  thunk for \"%s\" (pMD = %p)\n",
                         (UINT_PTR)&(pPointers[iMethod]), pMD->m_pszDebugMethodName, pMD));
 
                     UMEntryThunkData *pUMEntryThunkData = UMEntryThunkData::CreateUMEntryThunk();

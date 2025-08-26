@@ -765,7 +765,7 @@ VOID SimpleComCallWrapper::Neuter()
     }
     CONTRACTL_END;
 
-    STRESS_LOG1 (LF_INTEROP, LL_INFO100, "Neutering CCW 0x%p\n", this->GetMainWrapper());
+    STRESS_LOG1 (LF_INTEROP, LL_INFO100, "Neutering CCW %p\n", this->GetMainWrapper());
 
     // Disconnect the object from the CCW
     //  Starting now, if this object gets passed out
@@ -1891,7 +1891,7 @@ void ComCallWrapper::Cleanup()
     ULONG refCount = m_pSimpleWrapper->GetRefCount();
 
     LOG((LF_INTEROP, LL_INFO100,
-        "Calling ComCallWrapper::Cleanup on CCW 0x%p. cbRef = 0x%x\n",
+        "Calling ComCallWrapper::Cleanup on CCW %p. cbRef = 0x%x\n",
         this, refCount));
 
     if (refCount != 0)
@@ -1905,7 +1905,7 @@ void ComCallWrapper::Cleanup()
         return;
     }
 
-    STRESS_LOG1 (LF_INTEROP, LL_INFO100, "Cleaning up CCW 0x%p\n", this);
+    STRESS_LOG1 (LF_INTEROP, LL_INFO100, "Cleaning up CCW %p\n", this);
 
     // Retrieve the COM call wrapper cache before we clear anything
     ComCallWrapperCache *pWrapperCache = m_pSimpleWrapper->GetWrapperCache();

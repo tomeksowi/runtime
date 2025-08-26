@@ -4262,26 +4262,26 @@ void emitter::emitDispGCinfo()
     printf("Emitter GC tracking info:");
     printf("\n  emitPrevGCrefVars ");
     dumpConvertedVarSet(emitComp, emitPrevGCrefVars);
-    printf("\n  emitPrevGCrefRegs(0x%p)=", dspPtr(&emitPrevGCrefRegs));
+    printf("\n  emitPrevGCrefRegs(%p)=", dspPtr(&emitPrevGCrefRegs));
     printRegMaskInt(emitPrevGCrefRegs);
     emitDispRegSet(emitPrevGCrefRegs);
-    printf("\n  emitPrevByrefRegs(0x%p)=", dspPtr(&emitPrevByrefRegs));
+    printf("\n  emitPrevByrefRegs(%p)=", dspPtr(&emitPrevByrefRegs));
     printRegMaskInt(emitPrevByrefRegs);
     emitDispRegSet(emitPrevByrefRegs);
     printf("\n  emitInitGCrefVars ");
     dumpConvertedVarSet(emitComp, emitInitGCrefVars);
-    printf("\n  emitInitGCrefRegs(0x%p)=", dspPtr(&emitInitGCrefRegs));
+    printf("\n  emitInitGCrefRegs(%p)=", dspPtr(&emitInitGCrefRegs));
     printRegMaskInt(emitInitGCrefRegs);
     emitDispRegSet(emitInitGCrefRegs);
-    printf("\n  emitInitByrefRegs(0x%p)=", dspPtr(&emitInitByrefRegs));
+    printf("\n  emitInitByrefRegs(%p)=", dspPtr(&emitInitByrefRegs));
     printRegMaskInt(emitInitByrefRegs);
     emitDispRegSet(emitInitByrefRegs);
     printf("\n  emitThisGCrefVars ");
     dumpConvertedVarSet(emitComp, emitThisGCrefVars);
-    printf("\n  emitThisGCrefRegs(0x%p)=", dspPtr(&emitThisGCrefRegs));
+    printf("\n  emitThisGCrefRegs(%p)=", dspPtr(&emitThisGCrefRegs));
     printRegMaskInt(emitThisGCrefRegs);
     emitDispRegSet(emitThisGCrefRegs);
-    printf("\n  emitThisByrefRegs(0x%p)=", dspPtr(&emitThisByrefRegs));
+    printf("\n  emitThisByrefRegs(%p)=", dspPtr(&emitThisByrefRegs));
     printRegMaskInt(emitThisByrefRegs);
     emitDispRegSet(emitThisByrefRegs);
     printf("\n\n");
@@ -8438,7 +8438,7 @@ void emitter::emitOutputDataSec(dataSecDsc* sec, BYTE* dst)
                     emitRecordRelocation(&(bDstRW[i]), target, IMAGE_REL_BASED_HIGHLOW);
                 }
 
-                JITDUMP("  " FMT_BB ": 0x%p\n", block->bbNum, bDstRW[i]);
+                JITDUMP("  " FMT_BB ": %p\n", block->bbNum, bDstRW[i]);
             }
         }
         // relative label table

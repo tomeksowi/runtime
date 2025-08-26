@@ -6665,11 +6665,11 @@ size_t emitter::emitOutputInstr(insGroup* ig, instrDesc* id, BYTE** dp)
         if (JitConfig.JitEmitPrintRefRegs() != 0)
         {
             printf("Before emitOutputInstr for id->idDebugOnlyInfo()->idNum=0x%02x\n", id->idDebugOnlyInfo()->idNum);
-            printf("  emitThisGCrefRegs(0x%p)=", dspPtr(&emitThisGCrefRegs));
+            printf("  emitThisGCrefRegs(%p)=", dspPtr(&emitThisGCrefRegs));
             printRegMaskInt(emitThisGCrefRegs);
             emitDispRegSet(emitThisGCrefRegs);
             printf("\n");
-            printf("  emitThisByrefRegs(0x%p)=", dspPtr(&emitThisByrefRegs));
+            printf("  emitThisByrefRegs(%p)=", dspPtr(&emitThisByrefRegs));
             printRegMaskInt(emitThisByrefRegs);
             emitDispRegSet(emitThisByrefRegs);
             printf("\n");
@@ -6804,7 +6804,7 @@ void emitter::emitDispImm(int imm, bool addComma, bool alwaysHex /* =false */, b
  */
 void emitter::emitDispReloc(BYTE* addr)
 {
-    printf("0x%p", dspPtr(addr));
+    printf("%p", dspPtr(addr));
 }
 
 /*****************************************************************************

@@ -332,7 +332,7 @@ void TieredCompilationManager::AsyncPromoteToTier1(
         m_methodsToOptimize.InsertTail(pMethodListItem);
         ++m_countOfMethodsToOptimize;
 
-        LOG((LF_TIEREDCOMPILATION, LL_INFO10000, "TieredCompilationManager::AsyncPromoteToTier1 Method=0x%pM (%s::%s), code version id=0x%x queued\n",
+        LOG((LF_TIEREDCOMPILATION, LL_INFO10000, "TieredCompilationManager::AsyncPromoteToTier1 Method=%pM (%s::%s), code version id=0x%x queued\n",
             pMethodDesc, pMethodDesc->m_pszDebugClassName, pMethodDesc->m_pszDebugMethodName,
             t1NativeCodeVersion.GetVersionId()));
 
@@ -954,7 +954,7 @@ BOOL TieredCompilationManager::CompileCodeVersion(NativeCodeVersion nativeCodeVe
         _ASSERTE(!pMethod->HasUnmanagedCallersOnlyAttribute());
         config->SetCallerGCMode(CallerGCMode::Coop);
         pCode = pMethod->PrepareCode(config);
-        LOG((LF_TIEREDCOMPILATION, LL_INFO10000, "TieredCompilationManager::CompileCodeVersion Method=0x%pM (%s::%s), code version id=0x%x, code ptr=0x%p\n",
+        LOG((LF_TIEREDCOMPILATION, LL_INFO10000, "TieredCompilationManager::CompileCodeVersion Method=%pM (%s::%s), code version id=0x%x, code ptr=%p\n",
             pMethod, pMethod->m_pszDebugClassName, pMethod->m_pszDebugMethodName,
             nativeCodeVersion.GetVersionId(),
             pCode));
@@ -1004,7 +1004,7 @@ void TieredCompilationManager::ActivateCodeVersion(NativeCodeVersion nativeCodeV
         // methods this first attempt should succeed
         ilParent = nativeCodeVersion.GetILCodeVersion();
         hr = ilParent.SetActiveNativeCodeVersion(nativeCodeVersion);
-        LOG((LF_TIEREDCOMPILATION, LL_INFO10000, "TieredCompilationManager::ActivateCodeVersion Method=0x%pM (%s::%s), code version id=0x%x. SetActiveNativeCodeVersion ret=0x%x\n",
+        LOG((LF_TIEREDCOMPILATION, LL_INFO10000, "TieredCompilationManager::ActivateCodeVersion Method=%pM (%s::%s), code version id=0x%x. SetActiveNativeCodeVersion ret=0x%x\n",
             pMethod, pMethod->m_pszDebugClassName, pMethod->m_pszDebugMethodName,
             nativeCodeVersion.GetVersionId(),
             hr));

@@ -946,7 +946,7 @@ BOOL CLRToCOMMethodFrame::TraceFrame_Impl(Thread *thread, BOOL fromPatch,
     trace->InitForUnmanaged(ip);
 
     LOG((LF_CORDB, LL_INFO10000,
-         "CLRToCOMMethodFrame::TraceFrame: ip=0x%p\n", ip));
+         "CLRToCOMMethodFrame::TraceFrame: ip=%p\n", ip));
 
     return TRUE;
 }

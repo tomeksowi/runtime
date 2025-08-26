@@ -6758,7 +6758,7 @@ int Compiler::compCompileHelper(CORINFO_MODULE_HANDLE classPtr,
 
     if (compIsForInlining())
     {
-        JITLOG((LL_INFO100000, "\nINLINER impTokenLookupContextHandle for %s is 0x%p.\n",
+        JITLOG((LL_INFO100000, "\nINLINER impTokenLookupContextHandle for %s is %p.\n",
                 eeGetMethodFullName(info.compMethodHnd), dspPtr(impTokenLookupContextHandle)));
     }
 

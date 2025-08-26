@@ -480,7 +480,7 @@ namespace InteropLibImports
             return S_FALSE;
         }
 
-        STRESS_LOG2(LF_INTEROP, LL_INFO1000, "Found reference path: 0x%p => 0x%p\n",
+        STRESS_LOG2(LF_INTEROP, LL_INFO1000, "Found reference path: %p => %p\n",
             OBJECTREFToObject(source),
             OBJECTREFToObject(target));
         return runtimeContext->RefCache->AddReferenceFromObjectToObject(source, target);

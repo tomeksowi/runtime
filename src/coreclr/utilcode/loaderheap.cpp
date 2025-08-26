@@ -538,7 +538,7 @@ void UnlockedLoaderHeap::UnlockedBackoutMem(void *pMem,
                            "\n"
                            "The arguments to BackoutMem() were:\n"
                            "\n"
-                           "     Pointer: 0x%p\n"
+                           "     Pointer: %p\n"
                            "     Size:    %lu (0x%lx)\n"
                            "\n"
                            ,szFile
@@ -1139,11 +1139,11 @@ void UnlockedLoaderHeap::ValidateFreeList(UnlockedLoaderHeap *pHeap)
     {
         StackSString message;
 
-        message.Printf("A loaderheap freelist has been corrupted. The bytes at or near address 0x%p appears to have been overwritten. We expected to see %s here.\n"
+        message.Printf("A loaderheap freelist has been corrupted. The bytes at or near address %p appears to have been overwritten. We expected to see %s here.\n"
                        "\n"
-                       "    LoaderHeap:                 0x%p\n"
-                       "    Suspect address at:         0x%p\n"
-                       "    Start of suspect freeblock: 0x%p\n"
+                       "    LoaderHeap:                 %p\n"
+                       "    Suspect address at:         %p\n"
+                       "    Start of suspect freeblock: %p\n"
                        "\n"
                        , pBadAddr
                        , pExpected

@@ -818,7 +818,7 @@ __out_ecount (cchMaxAssertStackLevelStringLen) CHAR *pszString     // @parm Plac
     }
     else
     {
-        sprintf_s(pszString, cchMaxAssertStackLevelStringLen, "<symbols not available> (0x%p)", (void *)dwAddr);
+        sprintf_s(pszString, cchMaxAssertStackLevelStringLen, "<symbols not available> (%p)", (void *)dwAddr);
     }
 
     LOCAL_ASSERT(strlen(pszString) < cchMaxAssertStackLevelStringLen);

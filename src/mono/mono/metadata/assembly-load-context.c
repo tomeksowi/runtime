@@ -399,7 +399,7 @@ mono_alc_load_raw_bytes (MonoAssemblyLoadContext *alc, guint8 *assembly_data, gu
 	MonoImage *image = mono_image_open_from_data_internal (alc, (char*)assembly_data, raw_assembly_len, TRUE, NULL, FALSE, NULL, NULL);
 
 	if (!image) {
-		mono_error_set_bad_image_by_name (error, "In memory assembly", "0x%p", assembly_data);
+		mono_error_set_bad_image_by_name (error, "In memory assembly", "%p", assembly_data);
 		return ass;
 	}
 
@@ -413,7 +413,7 @@ mono_alc_load_raw_bytes (MonoAssemblyLoadContext *alc, guint8 *assembly_data, gu
 
 	if (!ass) {
 		mono_image_close (image);
-		mono_error_set_bad_image_by_name (error, "In Memory assembly", "0x%p", assembly_data);
+		mono_error_set_bad_image_by_name (error, "In Memory assembly", "%p", assembly_data);
 		return ass;
 	}
 

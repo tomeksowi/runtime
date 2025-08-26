@@ -3121,7 +3121,7 @@ void VirtualCallStubManagerManager::AddStubManager(VirtualCallStubManager *pMgr)
     m_pManagers = pMgr;
 
     STRESS_LOG2(LF_CORDB | LF_CLASSLOADER, LL_INFO100,
-        "VirtualCallStubManagerManager::AddStubManager - 0x%p (vptr 0x%p)\n", pMgr, (*(PVOID*)pMgr));
+        "VirtualCallStubManagerManager::AddStubManager - %p (vptr %p)\n", pMgr, (*(PVOID*)pMgr));
 }
 
 //------------------------------------------------------------------
@@ -3154,7 +3154,7 @@ void VirtualCallStubManagerManager::RemoveStubManager(VirtualCallStubManager *pM
     m_pCacheElem = NULL;
 
     STRESS_LOG1(LF_CORDB | LF_CLASSLOADER, LL_INFO100,
-        "VirtualCallStubManagerManager::RemoveStubManager - 0x%p\n", pMgr);
+        "VirtualCallStubManagerManager::RemoveStubManager - %p\n", pMgr);
 }
 
 //------------------------------------------------------------------

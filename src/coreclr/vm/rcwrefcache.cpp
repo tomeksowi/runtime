@@ -73,16 +73,16 @@ void RCWRefCache::ResetDependentHandles()
     }
     CONTRACTL_END;
 
-    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache 0x%p] ----- RCWRefCache::ResetDependentHandles BEGINS -----\n", this));
+    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache %p] ----- RCWRefCache::ResetDependentHandles BEGINS -----\n", this));
     LOG((LF_INTEROP, LL_INFO100,
-        "\t[RCWRefCache 0x%p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
+        "\t[RCWRefCache %p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
         this, (ULONG) m_depHndList.Size(), m_dwDepHndListFreeIndex
         ));
 
     // Reset the index - now every handle in the cache can be reused
     m_dwDepHndListFreeIndex = 0;
 
-    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache 0x%p] ----- RCWRefCache::ResetDependentHandles ENDS   -----\n", this));
+    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache %p] ----- RCWRefCache::ResetDependentHandles ENDS   -----\n", this));
 }
 
 //
@@ -100,9 +100,9 @@ void RCWRefCache::ShrinkDependentHandles()
 
     _ASSERTE(m_dwDepHndListFreeIndex <= m_depHndList.Size());
 
-    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache 0x%p] ----- RCWRefCache::ShrinkDependentHandles BEGINS -----\n", this));
+    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache %p] ----- RCWRefCache::ShrinkDependentHandles BEGINS -----\n", this));
     LOG((LF_INTEROP, LL_INFO100,
-        "\t[RCWRefCache 0x%p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
+        "\t[RCWRefCache %p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
         this, (ULONG) m_depHndList.Size(), m_dwDepHndListFreeIndex
         ));
 
@@ -116,7 +116,7 @@ void RCWRefCache::ShrinkDependentHandles()
     if (m_dwDepHndListFreeIndex < depHndListSize / 2 && depHndListSize > SHRINK_TOTAL_THRESHOLD)
     {
         m_dwShrinkHint++;
-        LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache 0x%p] m_dwShrinkHint = %d\n", this, m_dwShrinkHint));
+        LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache %p] m_dwShrinkHint = %d\n", this, m_dwShrinkHint));
 
         //
         // Only shrink if we consistently seen such hint more than SHRINK_TOTAL_THRESHOLD times
@@ -125,7 +125,7 @@ void RCWRefCache::ShrinkDependentHandles()
         {
 
             LOG((LF_INTEROP, LL_INFO100,
-                "\t[RCWRefCache 0x%p] Shrinking dependent handle cache. Total SLOTS = %d\n",
+                "\t[RCWRefCache %p] Shrinking dependent handle cache. Total SLOTS = %d\n",
                 this, m_depHndList.Size()
                 ));
 
@@ -141,7 +141,7 @@ void RCWRefCache::ShrinkDependentHandles()
                 OBJECTHANDLE hnd = m_depHndList.Pop();
                 DestroyDependentHandle(hnd);
                 LOG((LF_INTEROP, LL_INFO1000,
-                    "\t[RCWRefCache 0x%p] DependentHandle 0x%p destroyed @ index %d\n",
+                    "\t[RCWRefCache %p] DependentHandle %p destroyed @ index %d\n",
                     this, hnd, (ULONG)(depHndListSize - (i - newSize + 1))));
             }
 
@@ -153,7 +153,7 @@ void RCWRefCache::ShrinkDependentHandles()
             // Reset shrink hint as we've just shrunk
             //
             m_dwShrinkHint = 0;
-            LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache 0x%p] Reset m_dwShrinkHint = 0\n", this));
+            LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache %p] Reset m_dwShrinkHint = 0\n", this));
         }
     }
     else
@@ -162,7 +162,7 @@ void RCWRefCache::ShrinkDependentHandles()
         // Reset shrink hint and start over
         //
         m_dwShrinkHint = 0;
-        LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache 0x%p] Reset m_dwShrinkCount = 0\n", this));
+        LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache %p] Reset m_dwShrinkCount = 0\n", this));
     }
 
     //
@@ -176,15 +176,15 @@ void RCWRefCache::ShrinkDependentHandles()
         mgr->StoreObjectInHandle(depHnd, NULL);
         mgr->SetDependentHandleSecondary(depHnd, NULL);
 
-        LOG((LF_INTEROP, LL_INFO1000, "\t[RCWRefCache 0x%p] DependentHandle 0x%p cleared @ index %d\n", this, depHnd, (ULONG) i));
+        LOG((LF_INTEROP, LL_INFO1000, "\t[RCWRefCache %p] DependentHandle %p cleared @ index %d\n", this, depHnd, (ULONG) i));
     }
 
     LOG((LF_INTEROP, LL_INFO100,
-        "\t[RCWRefCache 0x%p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
+        "\t[RCWRefCache %p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
         this, (ULONG) m_depHndList.Size(), m_dwDepHndListFreeIndex
         ));
 
-    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache 0x%p] ----- RCWRefCache::ShrinkDependentHandles ENDS   -----\n", this));
+    LOG((LF_INTEROP, LL_INFO100, "\t[RCWRefCache %p] ----- RCWRefCache::ShrinkDependentHandles ENDS   -----\n", this));
 }
 
 //
@@ -224,7 +224,7 @@ HRESULT RCWRefCache::AddReferenceUsingDependentHandle(OBJECTREF obj1, OBJECTREF 
     HRESULT hr = S_OK;
 
     LOG((LF_INTEROP, LL_INFO1000,
-        "\t[RCWRefCache 0x%p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
+        "\t[RCWRefCache %p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
         this, (ULONG) m_depHndList.Size(), m_dwDepHndListFreeIndex
         ));
 
@@ -239,7 +239,7 @@ HRESULT RCWRefCache::AddReferenceUsingDependentHandle(OBJECTREF obj1, OBJECTREF 
 
             STRESS_LOG2(
                 LF_INTEROP, LL_INFO1000,
-                "\t[RCWRefCache] Created DependentHandle 0x%p @ appended SLOT %d\n",
+                "\t[RCWRefCache] Created DependentHandle %p @ appended SLOT %d\n",
                 depHnd,
                 m_dwDepHndListFreeIndex
                 );
@@ -264,7 +264,7 @@ HRESULT RCWRefCache::AddReferenceUsingDependentHandle(OBJECTREF obj1, OBJECTREF 
 
         STRESS_LOG3(
             LF_INTEROP, LL_INFO1000,
-            "\t[RCWRefCache 0x%p] Reused DependentHandle 0x%p @ valid SLOT %d\n",
+            "\t[RCWRefCache %p] Reused DependentHandle %p @ valid SLOT %d\n",
             this, depHnd, m_dwDepHndListFreeIndex);
 
         // Increment the index and the next one will be used
@@ -274,7 +274,7 @@ HRESULT RCWRefCache::AddReferenceUsingDependentHandle(OBJECTREF obj1, OBJECTREF 
     if (SUCCEEDED(hr))
     {
         LOG((LF_INTEROP, LL_INFO1000,
-            "\t[RCWRefCache 0x%p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
+            "\t[RCWRefCache %p] Dependent handle cache status: Total SLOTs = %d, Next free SLOT index = %d\n",
             this, (ULONG) m_depHndList.Size(), m_dwDepHndListFreeIndex
             ));
     }

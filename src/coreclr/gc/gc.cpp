@@ -11278,7 +11278,7 @@ class seg_free_spaces
             len = heap_segment_committed (seg) - addr;
         }
 
-        dprintf (SEG_REUSE_LOG_1, ("[%d]0x%p %zd", heap_num, addr, len));
+        dprintf (SEG_REUSE_LOG_1, ("[%d]%p %zd", heap_num, addr, len));
     }
 
     void dump()
@@ -11577,7 +11577,7 @@ retry:
                     new_free_space_size = free_space_size - plug_size;
                     pinned_len (m) = new_free_space_size;
 #ifdef SIMPLE_DPRINTF
-                    dprintf (SEG_REUSE_LOG_0, ("[%d]FP: 0x%p->0x%p(%zx)(%zx), [0x%p (2^%d) -> [0x%p (2^%d)",
+                    dprintf (SEG_REUSE_LOG_0, ("[%d]FP: %p->%p(%zx)(%zx), [%p (2^%d) -> [%p (2^%d)",
                                 heap_num,
                                 old_loc,
                                 new_address,
@@ -11616,7 +11616,7 @@ retry:
                     new_free_space_size = free_space_size - plug_size;
                     heap_segment_plan_allocated (seg) = new_address + plug_size;
 #ifdef SIMPLE_DPRINTF
-                    dprintf (SEG_REUSE_LOG_0, ("[%d]FS: 0x%p-> 0x%p(%zd) (2^%d) -> 0x%p (2^%d)",
+                    dprintf (SEG_REUSE_LOG_0, ("[%d]FS: %p-> %p(%zd) (2^%d) -> %p (2^%d)",
                                 heap_num,
                                 old_loc,
                                 new_address,
@@ -16113,7 +16113,7 @@ void gc_heap::check_batch_mark_array_bits (uint8_t* start, uint8_t* end)
         unsigned int wrd = firstwrd & lastwrd;
         if (mark_array[startwrd] & wrd)
         {
-            dprintf  (1, ("The %x portion of mark bits at 0x%zx:0x%x(addr: 0x%p) were not cleared",
+            dprintf  (1, ("The %x portion of mark bits at 0x%zx:0x%x(addr: %p) were not cleared",
                             wrd, startwrd,
                             mark_array [startwrd], mark_word_address (startwrd)));
             FATAL_GC_ERROR();
@@ -16126,7 +16126,7 @@ void gc_heap::check_batch_mark_array_bits (uint8_t* start, uint8_t* end)
     {
         if (mark_array[startwrd] & firstwrd)
         {
-            dprintf  (1, ("The %x portion of mark bits at 0x%zx:0x%x(addr: 0x%p) were not cleared",
+            dprintf  (1, ("The %x portion of mark bits at 0x%zx:0x%x(addr: %p) were not cleared",
                             firstwrd, startwrd,
                             mark_array [startwrd], mark_word_address (startwrd)));
             FATAL_GC_ERROR();
@@ -16139,7 +16139,7 @@ void gc_heap::check_batch_mark_array_bits (uint8_t* start, uint8_t* end)
     {
         if (mark_array[wrdtmp])
         {
-            dprintf  (1, ("The mark bits at 0x%zx:0x%x(addr: 0x%p) were not cleared",
+            dprintf  (1, ("The mark bits at 0x%zx:0x%x(addr: %p) were not cleared",
                             wrdtmp,
                             mark_array [wrdtmp], mark_word_address (wrdtmp)));
             FATAL_GC_ERROR();
@@ -16151,7 +16151,7 @@ void gc_heap::check_batch_mark_array_bits (uint8_t* start, uint8_t* end)
     {
         if (mark_array[endwrd] & lastwrd)
         {
-            dprintf  (1, ("The %x portion of mark bits at 0x%x:0x%x(addr: 0x%p) were not cleared",
+            dprintf  (1, ("The %x portion of mark bits at 0x%x:0x%x(addr: %p) were not cleared",
                             lastwrd, lastwrd,
                             mark_array [lastwrd], mark_word_address (lastwrd)));
             FATAL_GC_ERROR();
@@ -20515,7 +20515,7 @@ uint8_t* gc_heap::allocate_in_expanded_heap (generation* gen,
     if (consider_bestfit && use_bestfit)
     {
         assert (bestfit_seg);
-        dprintf (SEG_REUSE_LOG_1, ("reallocating 0x%p in expanded heap, size: %zd",
+        dprintf (SEG_REUSE_LOG_1, ("reallocating %p in expanded heap, size: %zd",
                     old_loc, size));
         return bestfit_seg->fit (old_loc,
                                  size REQD_ALIGN_AND_OFFSET_ARG);
@@ -38420,11 +38420,11 @@ void gc_heap::verify_mark_array_cleared (uint8_t* begin, uint8_t* end, uint32_t*
             uint8_t* addr = mark_word_address (markw);
 #ifdef USE_REGIONS
             heap_segment* region = region_of (addr);
-            dprintf (1, ("The mark bits at 0x%zx:0x%x(addr: 0x%p, r: %zx(%p)) were not cleared",
+            dprintf (1, ("The mark bits at 0x%zx:0x%x(addr: %p, r: %zx(%p)) were not cleared",
                             markw, mark_array_addr[markw], addr,
                             (size_t)region, heap_segment_mem (region)));
 #else
-            dprintf (1, ("The mark bits at 0x%zx:0x%x(addr: 0x%p) were not cleared",
+            dprintf (1, ("The mark bits at 0x%zx:0x%x(addr: %p) were not cleared",
                             markw, mark_array_addr[markw], addr));
 #endif //USE_REGIONS
             FATAL_GC_ERROR();
@@ -42739,7 +42739,7 @@ void gc_heap::count_plug (size_t last_plug_size, uint8_t*& last_plug)
         total_ephemeral_plugs += plug_size;
         size_t plug_size_power2 = round_up_power2 (plug_size);
         ordered_plug_indices[relative_index_power2_plug (plug_size_power2)]++;
-        dprintf (SEG_REUSE_LOG_1, ("[%d]count_plug: adding 0x%p - %zd (2^%d) to ordered plug array",
+        dprintf (SEG_REUSE_LOG_1, ("[%d]count_plug: adding %p - %zd (2^%d) to ordered plug array",
             heap_number,
             last_plug,
             plug_size,
@@ -48195,7 +48195,7 @@ void gc_heap::bgc_verify_mark_array_cleared (heap_segment* seg, bool always_veri
             {
                 if (mark_array [markw])
                 {
-                    dprintf (1, ("The mark bits at 0x%zx:0x%u(addr: 0x%p) were not cleared",
+                    dprintf (1, ("The mark bits at 0x%zx:0x%u(addr: %p) were not cleared",
                                     markw, mark_array [markw], mark_word_address (markw)));
                     FATAL_GC_ERROR();
                 }

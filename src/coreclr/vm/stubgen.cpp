@@ -528,7 +528,7 @@ ILStubLinker::LogILInstruction(
         case ShortInlineVar:
         case ShortInlineI:
         case InlineI:
-            strArgument.Printf("0x%p", pInstruction->uArg);
+            strArgument.Printf("%p", pInstruction->uArg);
             break;
 
         case InlineI8:

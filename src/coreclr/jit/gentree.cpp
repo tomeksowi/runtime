@@ -12947,7 +12947,7 @@ void Compiler::gtDispTree(GenTree*                    tree,
 
                 if ((inlineInfo != nullptr) && (inlineInfo->exactContextHandle != nullptr))
                 {
-                    printf(" (exactContextHandle=0x%p)", dspPtr(inlineInfo->exactContextHandle));
+                    printf(" (exactContextHandle=%p)", dspPtr(inlineInfo->exactContextHandle));
                 }
             }
 

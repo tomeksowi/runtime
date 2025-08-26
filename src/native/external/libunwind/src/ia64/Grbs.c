@@ -256,7 +256,7 @@ rbs_cover_and_flush (struct cursor *c, unw_word_t nregs,
               if (curr == left_edge)
                 {
                   Debug (0, "rbs-underflow while flushing %lu regs, "
-                         "bsp=0x%lx, dst=0x%p\n", (unsigned long) nregs,
+                         "bsp=0x%lx, dst=%p\n", (unsigned long) nregs,
                          (unsigned long) bsp, dst);
                   return -UNW_EBADREG;
                 }

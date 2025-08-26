@@ -1802,7 +1802,7 @@ BOOL ILStubManager::TraceManager(Thread *thread,
             PInvokeMethodDesc* pNMD = reinterpret_cast<PInvokeMethodDesc*>(pMD);
             _ASSERTE_IMPL(!pNMD->PInvokeTargetIsImportThunk());
             target = (PCODE)pNMD->GetPInvokeTarget();
-            LOG((LF_CORDB, LL_INFO10000, "ILSM::TraceManager: Forward P/Invoke case 0x%p\n", target));
+            LOG((LF_CORDB, LL_INFO10000, "ILSM::TraceManager: Forward P/Invoke case %p\n", target));
             trace->InitForUnmanaged(target);
         }
 #ifdef FEATURE_COMINTEROP
